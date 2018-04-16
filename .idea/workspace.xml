@@ -75,11 +75,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="exceptions.scala" pinned="false" current-in-tab="true">
+      <file leaf-file-name="exceptions.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/com/hortonworks/faas/spark/connector/util/exceptions.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+            <state relative-caret-position="68">
+              <caret line="4" column="5" lean-forward="false" selection-start-line="4" selection-start-column="5" selection-end-line="4" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ExecuteWithExceptions.scala" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/com/hortonworks/faas/spark/connector/util/ExecuteWithExceptions.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-20">
+              <caret line="8" column="39" lean-forward="true" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="39" />
               <folding />
             </state>
           </provider>
@@ -88,8 +98,8 @@
       <file leaf-file-name="WithCloseables.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/com/hortonworks/faas/spark/connector/util/WithCloseables.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+            <state relative-caret-position="170">
+              <caret line="10" column="7" lean-forward="false" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
               <folding />
             </state>
           </provider>
@@ -105,6 +115,7 @@
       <find>com.memsql</find>
       <find>scalatest</find>
       <find>com.sap.kafka</find>
+      <find>com.sap.kafka.utils</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -125,7 +136,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/config/spark-connect-hana-source.properties" />
         <option value="$PROJECT_DIR$/src/main/scala/com/hortonworks/faas/db/client/hana/AbstractHANAPartitionLoader.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/com/hortonworks/faas/db/client/hana/HANAPartitionLoader.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/com/hortonworks/faas/db/client/hana/exceptions.scala" />
@@ -176,6 +186,7 @@
         <option value="$PROJECT_DIR$/src/main/scala/com/hortonworks/faas/spark/connector/util/scriptFile.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/com/hortonworks/faas/spark/connector/util/WithCloseables.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/com/hortonworks/faas/spark/connector/util/exceptions.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/com/hortonworks/faas/spark/connector/util/ExecuteWithExceptions.scala" />
       </list>
     </option>
   </component>
@@ -441,12 +452,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1523889100403</updated>
-      <workItem from="1523889103413" duration="9609000" />
+      <workItem from="1523889103413" duration="9745000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9609000" />
+    <option name="totallyTimeSpent" value="9745000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="853" extended-state="0" />
@@ -521,14 +532,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/scala/com/hortonworks/faas/db/connect/config/BaseParameters.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="8" lean-forward="false" selection-start-line="0" selection-start-column="8" selection-end-line="0" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/org/apache/kafka/kafka-clients/0.10.1.0/kafka-clients-0.10.1.0.jar!/org/apache/kafka/common/utils/Time.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -917,16 +920,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/com/hortonworks/faas/spark/connector/util/WithCloseables.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+        <state relative-caret-position="170">
+          <caret line="10" column="7" lean-forward="false" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/com/hortonworks/faas/spark/connector/util/exceptions.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+        <state relative-caret-position="68">
+          <caret line="4" column="5" lean-forward="false" selection-start-line="4" selection-start-column="5" selection-end-line="4" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/com/hortonworks/faas/spark/connector/util/ExecuteWithExceptions.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-20">
+          <caret line="8" column="39" lean-forward="true" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="39" />
           <folding />
         </state>
       </provider>
