@@ -7,9 +7,19 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/scala" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/scala" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: org.scala-lang:scala-library:2.11.7" level="project" />
+    <orderEntry type="library" name="Maven: com.google.guava:guava:19.0" level="project" />
+    <orderEntry type="library" name="Maven: com.google.code.findbugs:jsr305:2.0.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: com.h2database:h2:1.4.192" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.mockito:mockito-all:1.10.19" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.scalatest:scalatest_2.11:2.2.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.scala-lang:scala-reflect:2.11.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.scala-lang.modules:scala-xml_2.11:1.0.2" level="project" />
   </component>
 </module>

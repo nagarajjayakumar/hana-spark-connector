@@ -9,4 +9,226 @@
     <version>1.0-SNAPSHOT</version>
 
 
+    <properties>
+        <scala.binary.version>2.11</scala.binary.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <gt.version>15.1</gt.version>
+        <scala.abi.version>2.11</scala.abi.version>
+        <scala.version>2.11.7</scala.version>
+        <spark.version>2.0.2</spark.version>
+        <!-- environment specific variables-->
+        <accumulo.version>1.7.2</accumulo.version>
+        <zookeeper.version>3.4.9</zookeeper.version>
+        <hadoop.version>2.5.2</hadoop.version>
+        <hbase.hadoop.version>2.5.2</hbase.hadoop.version>
+        <kafka10.version>0.10.0.1</kafka10.version>
+        <kafka09.version>0.9.0.1</kafka09.version>
+        <kafka08.version>0.8.2.1</kafka08.version>
+        <storm.version>1.0.2</storm.version>
+        <hbase.version>1.3.1</hbase.version>
+        <curator.version>2.11.0</curator.version>
+        <cassandra.version>3.0.0</cassandra.version>
+
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>confluent</id>
+            <url>http://packages.confluent.io/maven/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>maven2</id>
+            <url>https://repo.maven.apache.org/maven2/</url>
+            <!--<releases>-->
+            <!--<enabled>true</enabled>-->
+            <!--<updatePolicy>always</updatePolicy>-->
+            <!--</releases>-->
+        </repository>
+
+        <repository>
+            <id>geotools</id>
+            <url>http://download.osgeo.org/webdav/geotools</url>
+            <!--<releases>-->
+            <!--<enabled>true</enabled>-->
+            <!--<updatePolicy>always</updatePolicy>-->
+            <!--</releases>-->
+        </repository>
+        <repository>
+            <id>boundlessgeo</id>
+            <url>http://repo.boundlessgeo.com/main</url>
+            <!--<releases>-->
+            <!--<enabled>true</enabled>-->
+            <!--<updatePolicy>always</updatePolicy>-->
+            <!--</releases>-->
+        </repository>
+        <repository>
+            <id>conjars.org</id>
+            <url>http://conjars.org/repo</url>
+            <!--<releases>-->
+            <!--<enabled>true</enabled>-->
+            <!--<updatePolicy>always</updatePolicy>-->
+            <!--</releases>-->
+        </repository>
+
+        <repository>
+            <id>locationtech-releases-id</id>
+            <url>https://repo.locationtech.org/content/repositories/releases</url>
+            <!--<releases>-->
+            <!--<enabled>true</enabled>-->
+            <!--<updatePolicy>always</updatePolicy>-->
+            <!--</releases>-->
+        </repository>
+        <repository>
+            <id>locationtech-snapshots</id>
+            <url>https://repo.locationtech.org/content/repositories/snapshots</url>
+            <!--<releases>-->
+            <!--<enabled>true</enabled>-->
+            <!--<updatePolicy>always</updatePolicy>-->
+            <!--</releases>-->
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <!-- scala dependency -->
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>${scala.version}</version>
+        </dependency>
+
+
+
+        <!-- misc dependencies -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>19.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>2.0.3</version>
+        </dependency>
+
+        <!-- test dependencies -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.192</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.10.19</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.scalatest</groupId>
+            <artifactId>scalatest_${scala.binary.version}</artifactId>
+            <version>2.2.2</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <sourceDirectory>src/main/scala</sourceDirectory>
+        <testSourceDirectory>src/test/scala</testSourceDirectory>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.properties</include>
+                </includes>
+            </testResource>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/*.properties</exclude>
+                </excludes>
+            </testResource>
+        </testResources>
+        <plugins>
+            <!-- maven scala plugin -->
+            <plugin>
+                <groupId>org.scala-tools</groupId>
+                <artifactId>maven-scala-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <scalaVersion>${scala.version}</scalaVersion>
+                    <args>
+                        <arg>-target:jvm-1.5</arg>
+                    </args>
+                </configuration>
+            </plugin>
+
+            <!-- maven shade plugin to bundle the jdbc driver -->
+            <!--plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <artifactSet>
+                                <includes>
+                                    <include>com.google.protobuf:protobuf-java</include>
+                                    <include>com.sap.hl.jdbc:hl-jdbc</include>
+                                    <include>com.ecwid.consul:consul-api</include>
+                                </includes>
+                            </artifactSet>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin-->
+
+            <!-- disable surefire -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+            <!-- enable scalatest -->
+            <plugin>
+                <groupId>org.scalatest</groupId>
+                <artifactId>scalatest-maven-plugin</artifactId>
+                <version>1.0</version>
+                <configuration>
+                    <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+                    <junitxml>.</junitxml>
+                    <filereports>TestSuite.txt</filereports>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>test</id>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
