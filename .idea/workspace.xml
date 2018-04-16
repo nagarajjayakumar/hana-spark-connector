@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b7830c8a-404d-4767-9412-d575202f7ef7" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_scala_lang_scala_library_2_11_7.xml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/spark-connect-hana-sink.properties" afterPath="$PROJECT_DIR$/config/spark-connect-hana-sink.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/spark-connect-hana-source.properties" afterPath="$PROJECT_DIR$/config/spark-connect-hana-source.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hana-spark-connector.iml" afterPath="$PROJECT_DIR$/hana-spark-connector.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/com/hortonworks/faas/spark/connector/util/MemSQLConnectionInfo.scala" afterPath="" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -20,10 +15,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="true">
+      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1099">
+            <state relative-caret-position="199">
               <caret line="106" column="28" lean-forward="false" selection-start-line="106" selection-start-column="23" selection-end-line="106" selection-end-column="28" />
               <folding />
             </state>
@@ -40,8 +35,8 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MemSQLConnectionInfo.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/com/hortonworks/faas/spark/connector/util/MemSQLConnectionInfo.scala">
+      <file leaf-file-name="HanaSQLConnectionInfo.scala" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/com/hortonworks/faas/spark/connector/util/HanaSQLConnectionInfo.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="68">
               <caret line="4" column="11" lean-forward="false" selection-start-line="4" selection-start-column="11" selection-end-line="4" selection-end-column="11" />
@@ -78,8 +73,8 @@
       <find>org.apache.kafka.common.utils</find>
       <find>context</find>
       <find>MemSQLRDD</find>
-      <find>scalatest</find>
       <find>com.memsql</find>
+      <find>scalatest</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -415,12 +410,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1523889100403</updated>
-      <workItem from="1523889103413" duration="9270000" />
+      <workItem from="1523889103413" duration="9390000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9270000" />
+    <option name="totallyTimeSpent" value="9390000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="853" extended-state="0" />
@@ -863,14 +858,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/com/hortonworks/faas/spark/connector/util/MemSQLConnectionInfo.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="11" lean-forward="false" selection-start-line="4" selection-start-column="11" selection-end-line="4" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/com/hortonworks/faas/spark/connector/util/MetadataUtils.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
@@ -897,8 +884,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1099">
+        <state relative-caret-position="199">
           <caret line="106" column="28" lean-forward="false" selection-start-line="106" selection-start-column="23" selection-end-line="106" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/com/hortonworks/faas/spark/connector/util/HanaSQLConnectionInfo.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="11" lean-forward="false" selection-start-line="4" selection-start-column="11" selection-end-line="4" selection-end-column="11" />
           <folding />
         </state>
       </provider>

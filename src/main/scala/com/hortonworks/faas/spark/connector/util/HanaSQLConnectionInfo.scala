@@ -2,11 +2,11 @@ package com.hortonworks.faas.spark.connector.util
 
 import java.net.InetAddress
 
-case class MemSQLConnectionInfo(dbHost: String,
-                                dbPort: Int,
-                                user: String,
-                                password: String,
-                                dbName: String) {
+case class HanaSQLConnectionInfo(dbHost: String,
+                                 dbPort: Int,
+                                 user: String,
+                                 password: String,
+                                 dbName: String) {
 
   def toJDBCAddress: String = {
     var address = s"jdbc:mysql://$dbHost:$dbPort"
