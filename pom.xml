@@ -23,6 +23,9 @@
         <slf4j.version>1.7.12</slf4j.version>
         <scala.test.version>2.2.5</scala.test.version>
         <guava.version>19.0</guava.version>
+
+        <kafka.version>0.10.1.0</kafka.version>
+
     </properties>
 
     <dependencies>
@@ -149,6 +152,12 @@
         </dependency>
 
 
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>connect-api</artifactId>
+            <version>${kafka.version}</version>
+            <scope>compile</scope>
+        </dependency>
 
     </dependencies>
 
