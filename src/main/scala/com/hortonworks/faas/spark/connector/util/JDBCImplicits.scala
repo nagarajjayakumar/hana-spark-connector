@@ -1,6 +1,7 @@
 package com.hortonworks.faas.spark.connector.util
 
-import java.sql.{Statement, PreparedStatement, ResultSet, Connection}
+import java.sql.{Connection, PreparedStatement, ResultSet, Statement}
+
 import org.apache.spark.sql.Row
 
 object JDBCImplicits {

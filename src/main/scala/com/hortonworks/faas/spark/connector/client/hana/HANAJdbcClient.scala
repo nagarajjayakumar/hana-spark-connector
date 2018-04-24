@@ -3,18 +3,11 @@ package com.hortonworks.faas.spark.connector.client.hana
 import java.sql.{Connection, DriverManager, ResultSet}
 
 import com.hortonworks.faas.spark.connector.config.hana.HANAConfig
-import com.hortonworks.faas.spark.connector.config.{BaseConfigConstants, BaseParameters}
 import com.hortonworks.faas.spark.connector.util.hana.{HANAConnectorException, HANAJdbcBadStateException, HANAJdbcConnectionException, HANAJdbcException}
 import com.hortonworks.faas.spark.connector.util.{ExecuteWithExceptions, WithCloseables}
-import org.slf4j.{Logger, LoggerFactory}
-
-
-import org.apache.avro.generic.GenericFixed
+import org.apache.avro.Schema
 import org.apache.avro.generic.{GenericData, GenericRecord}
-import org.apache.avro.{Schema, SchemaBuilder}
-import org.apache.avro.SchemaBuilder._
-import org.apache.avro.Schema.Type._
-
+import org.slf4j.{Logger, LoggerFactory}
 
 import scala.util.{Failure, Success, Try}
 

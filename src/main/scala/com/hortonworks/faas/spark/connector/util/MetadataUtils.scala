@@ -1,7 +1,7 @@
 package com.hortonworks.faas.spark.connector.util
 
 import org.apache.spark.sql.catalyst.expressions.NamedExpression
-import org.apache.spark.sql.types.{MetadataBuilder, Metadata}
+import org.apache.spark.sql.types.{Metadata, MetadataBuilder}
 
 object MetadataUtils {
   val METADATA_ORIGINAL_NAME = "originalColumnName"
