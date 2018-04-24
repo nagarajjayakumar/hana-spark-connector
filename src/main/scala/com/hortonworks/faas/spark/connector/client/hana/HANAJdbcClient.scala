@@ -8,6 +8,14 @@ import com.hortonworks.faas.spark.connector.util.hana.{HANAConnectorException, H
 import com.hortonworks.faas.spark.connector.util.{ExecuteWithExceptions, WithCloseables}
 import org.slf4j.{Logger, LoggerFactory}
 
+
+import org.apache.avro.generic.GenericFixed
+import org.apache.avro.generic.{GenericData, GenericRecord}
+import org.apache.avro.{Schema, SchemaBuilder}
+import org.apache.avro.SchemaBuilder._
+import org.apache.avro.Schema.Type._
+
+
 import scala.util.{Failure, Success, Try}
 
 case class HANAJdbcClient(hanaConfiguration: HANAConfig)  {
@@ -244,8 +252,8 @@ case class HANAJdbcClient(hanaConfiguration: HANAConfig)  {
     * @param isColumnar if the table is columnar
     */
   def executeQuery(schema: Schema, queryString: String, offset: Int, limit: Int,
-                   isColumnar: Boolean = false): Option[List[Struct]] = {
-    ExecuteWithExceptions[Option[List[Struct]], Exception, HANAJdbcException] (
+                   isColumnar: Boolean = false): Option[List[GenericRecord]] = {
+    ExecuteWithExceptions[Option[List[GenericRecord]], Exception, HANAJdbcException] (
       new HANAJdbcException(s"execution of query $queryString failed")) { () =>
       WithCloseables(getConnection) { conn =>
         WithCloseables(conn.createStatement()) { stmt =>
@@ -274,12 +282,12 @@ case class HANAJdbcClient(hanaConfiguration: HANAConfig)  {
     }
   }
 
-  private def fetchResultSet(resultSet: ResultSet, schema: Schema): Option[List[Struct]] = {
-    var dm = List[Struct]()
+  private def fetchResultSet(resultSet: ResultSet, schema: Schema): Option[List[GenericRecord]] = {
+    var dm = List[GenericRecord]()
 
     while (resultSet.next()) {
       val metadata = resultSet.getMetaData
-      val struct = new Struct(schema)
+      val struct = new GenericData.Record(schema)
 
       for (i <- 1 to metadata.getColumnCount) {
         val dataType = metadata.getColumnType(i)
