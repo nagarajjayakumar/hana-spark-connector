@@ -6,7 +6,7 @@ import java.sql.{Connection, DriverManager}
 import com.hortonworks.faas.spark.connector.util.Loan
 import org.apache.commons.dbcp2.BasicDataSource
 
-object MemSQLConnectionPool {
+object HanaSQLConnectionPool {
   val DEFAULT_JDBC_LOGIN_TIMEOUT = 10 //seconds
   val pools: ConcurrentHashMap[HanaSQLConnectionInfo, BasicDataSource] = new ConcurrentHashMap
 
@@ -14,7 +14,7 @@ object MemSQLConnectionPool {
     DriverManager.setLoginTimeout(DEFAULT_JDBC_LOGIN_TIMEOUT)
 
     val newPool = new BasicDataSource
-    newPool.setDriverClassName("com.mysql.jdbc.Driver")
+    newPool.setDriverClassName("com.sap.db.jdbc.Driver")
     newPool.setUrl(info.toJDBCAddress)
     newPool.setUsername(info.user)
     newPool.setPassword(info.password)

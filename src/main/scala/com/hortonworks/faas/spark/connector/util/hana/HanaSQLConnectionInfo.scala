@@ -9,7 +9,7 @@ case class HanaSQLConnectionInfo(dbHost: String,
                                  dbName: String) {
 
   def toJDBCAddress: String = {
-    var address = s"jdbc:mysql://$dbHost:$dbPort"
+    var address = s"jdbc:sap://$dbHost:$dbPort"
     if (dbName.length > 0) {
       address += "/" + dbName
     }
