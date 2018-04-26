@@ -26,6 +26,8 @@
 
         <kafka.version>0.10.1.0</kafka.version>
 
+        <common.dbcp2.version>2.1.1</common.dbcp2.version>
+
     </properties>
 
     <dependencies>
@@ -170,6 +172,12 @@
             <!--<artifactId>avro</artifactId>-->
             <!--<version>1.8.1</version>-->
         <!--</dependency>-->
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+            <version>${common.dbcp2.version}</version>
+        </dependency>
 
     </dependencies>
 

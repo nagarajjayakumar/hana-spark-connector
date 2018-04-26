@@ -19,7 +19,7 @@ package com.hortonworks.faas.spark.connector.util
 
 /** Provides a basic/boilerplate Iterator implementation.
   * NOTE: This is a copy of [[org.apache.spark.util.NextIterator]] from the Spark codebase.
-  * It's been copied into this package so that we can use it in our [[com.hortonworks.faas.spark.connector.rdd.MemSQLRDD]].
+  * It's been copied into this package so that we can use it in our [[com.hortonworks.faas.spark.connector]].
   */
 private[spark] abstract class NextIterator[U] extends Iterator[U] {
 

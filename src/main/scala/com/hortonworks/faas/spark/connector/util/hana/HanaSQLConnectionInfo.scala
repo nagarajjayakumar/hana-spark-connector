@@ -1,4 +1,4 @@
-package com.hortonworks.faas.spark.connector.util
+package com.hortonworks.faas.spark.connector.util.hana
 
 import java.net.InetAddress
 
