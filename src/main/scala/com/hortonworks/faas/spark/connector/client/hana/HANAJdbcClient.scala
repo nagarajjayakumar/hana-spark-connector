@@ -1,9 +1,9 @@
 package com.hortonworks.faas.spark.connector.client.hana
 
-import java.sql.{Connection, DriverManager, ResultSet}
+import java.sql.{Connection,  ResultSet}
 
-import com.hortonworks.faas.spark.connector.config.hana.HANAConfig
-import com.hortonworks.faas.spark.connector.util.hana.{HANAConnectorException, HANAJdbcBadStateException, HANAJdbcConnectionException, HANAJdbcException}
+import com.hortonworks.faas.spark.connector.config.hana.{ HanaSQLConf, HanaSQLConnectionPool}
+import com.hortonworks.faas.spark.connector.util.hana._
 import com.hortonworks.faas.spark.connector.util.{ExecuteWithExceptions, WithCloseables}
 import org.apache.avro.Schema
 import org.apache.avro.generic.{GenericData, GenericRecord}
@@ -11,12 +11,18 @@ import org.slf4j.{Logger, LoggerFactory}
 
 import scala.util.{Failure, Success, Try}
 
-case class HANAJdbcClient(hanaConfiguration: HANAConfig)  {
+case class HANAJdbcClient(hanaConfiguration: HanaSQLConf)  {
   private val log: Logger = LoggerFactory.getLogger(classOf[HANAJdbcClient])
 
   protected val driver: String = "com.sap.db.jdbc.Driver"
 
   private val CONNECTION_FAIL_R = ".*Failed to open connection.*".r
+
+  def getHanaInfo: HanaSQLConnectionInfo = hanaConfiguration.hanaConnectionInfo
+
+
+  def withHanaConn[T]: ((Connection) => T) => T =
+    HanaSQLConnectionPool.withConnection(getHanaInfo)
 
   /**
    * Checks whether the provided exception is a connection opening failure one.
@@ -38,7 +44,7 @@ case class HANAJdbcClient(hanaConfiguration: HANAConfig)  {
    * @param tableName The table name
    * @return the fully qualified table name
    */
-  protected def tableWithNamespace(namespace: Option[String], tableName: String) =
+  def tableWithNamespace(namespace: Option[String], tableName: String) =
     namespace match {
       case Some(value) => s""""$value"."$tableName""""
       case None => tableName
@@ -51,7 +57,7 @@ case class HANAJdbcClient(hanaConfiguration: HANAConfig)  {
    * @return The HANA JDBC connection URL
    */
   protected def jdbcUrl: String = {
-    hanaConfiguration.connectionUrl
+    getHanaInfo.toJDBCAddress
   }
 
   /**
@@ -61,22 +67,7 @@ case class HANAJdbcClient(hanaConfiguration: HANAConfig)  {
    * @return The created JDBC [[Connection]] object
    */
    def getConnection: Connection = {
-     ExecuteWithExceptions[Connection, HANAConnectorException, HANAJdbcConnectionException] (
-      new HANAJdbcConnectionException("Cannot acquire a connection")) { () =>
-       val connectionUser: String = hanaConfiguration.connectionUser
-       val connectionPassword: String = hanaConfiguration.connectionPassword
-
-       Class.forName(driver)
-       Try(DriverManager.getConnection(jdbcUrl, connectionUser, connectionPassword))
-       match {
-         case Success(conn) => conn
-         case Failure(ex) if isFailedToOpenConnectionException(ex) =>
-           throw new HANAJdbcConnectionException(s"Opening a connection failed")
-         case Failure(ex) =>
-           /* Make a distinction between bad state and network failure */
-           throw new HANAJdbcBadStateException("Cannot acquire a connection")
-       }
-     }
+     HanaSQLConnectionPool.connect(getHanaInfo)
   }
 
   /**

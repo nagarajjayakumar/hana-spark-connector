@@ -27,6 +27,7 @@
         <kafka.version>0.10.1.0</kafka.version>
 
         <common.dbcp2.version>2.1.1</common.dbcp2.version>
+        <ngdbc.version>2.1.2</ngdbc.version>
 
     </properties>
 
@@ -177,6 +178,12 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-dbcp2</artifactId>
             <version>${common.dbcp2.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sap.db</groupId>
+            <artifactId>ngdbc</artifactId>
+            <version>${ngdbc.version}</version>
         </dependency>
 
     </dependencies>

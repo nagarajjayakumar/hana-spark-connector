@@ -1,9 +1,10 @@
-package com.hortonworks.faas.spark.connector.util.hana
+package com.hortonworks.faas.spark.connector.config.hana
 
-import java.util.concurrent.ConcurrentHashMap
 import java.sql.{Connection, DriverManager}
+import java.util.concurrent.ConcurrentHashMap
 
 import com.hortonworks.faas.spark.connector.util.Loan
+import com.hortonworks.faas.spark.connector.util.hana.HanaSQLConnectionInfo
 import org.apache.commons.dbcp2.BasicDataSource
 
 object HanaSQLConnectionPool {

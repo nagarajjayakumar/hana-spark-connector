@@ -2,6 +2,7 @@ package com.hortonworks.faas.spark.connector.util
 
 import java.sql.{Connection, PreparedStatement, ResultSet, Statement}
 
+import com.hortonworks.faas.spark.connector.dataframe.hana.TypeConversions
 import org.apache.spark.sql.Row
 
 object JDBCImplicits {
@@ -23,7 +24,7 @@ object JDBCImplicits {
       Row.fromSeq(Range(0, columnCount).map(i => {
         val columnType = rs.getMetaData.getColumnType(i + 1)
         val isSigned = rs.getMetaData.isSigned(i + 1)
-        //TypeConversions.GetJDBCValue(columnType, isSigned, i + 1, rs)
+        TypeConversions.GetJDBCValue(columnType,rs, i + 1)
       }))
     }
 
