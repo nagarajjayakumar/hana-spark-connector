@@ -1,4 +1,4 @@
-package com.hortonworks.faas.spark.connector.dataframe.hana
+package com.hortonworks.faas.spark.connector.hana.dataframe
 
 import java.sql.{ResultSet, ResultSetMetaData, Types => JDBCTypes}
 
@@ -16,15 +16,15 @@ object TypeConversions {
   }
 
   /**
-   * Find the appropriate HANASQL type from a SparkSQL type.
+   * Find the appropriate HanaDb type from a SparkSQL type.
    *
    * Most types share the same name but there are a few special cases because
    * the types don't align perfectly.
    *
    * @param dataType A SparkSQL Type
-   * @return Corresponding HANASQL type
+   * @return Corresponding HanaDb type
    */
-  def DataFrameTypeToHANASQLTypeString(dataType: DataType): String = {
+  def DataFrameTypeToHanaDbTypeString(dataType: DataType): String = {
     dataType match {
       case ShortType => "SMALLINT"
       case LongType => "BIGINT"

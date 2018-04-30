@@ -1,4 +1,4 @@
-package com.hortonworks.faas.spark.connector.util.hana
+package com.hortonworks.faas.spark.connector.hana.util
 
 import com.hortonworks.faas.spark.connector.util.ConnectorException
 

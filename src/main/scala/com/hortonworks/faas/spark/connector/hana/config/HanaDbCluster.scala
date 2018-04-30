@@ -1,29 +1,48 @@
-package com.hortonworks.faas.spark.connector.config.hana
+package com.hortonworks.faas.spark.connector.hana.config
 
 import java.sql.Connection
 
-import com.hortonworks.faas.spark.connector.client.hana.{HANAJdbcClient, metaAttr}
-import com.hortonworks.faas.spark.connector.dataframe.hana.TypeConversions
+import com.hortonworks.faas.spark.connector.hana.client.HanaDbJdbcClient
+import com.hortonworks.faas.spark.connector.hana.dataframe.TypeConversions
+import com.hortonworks.faas.spark.connector.hana.util.{HANAJdbcException, HanaDbConnectionInfo}
 import com.hortonworks.faas.spark.connector.util.{ExecuteWithExceptions, WithCloseables}
-import com.hortonworks.faas.spark.connector.util.hana.{HANAJdbcException, HanaSQLConnectionInfo}
 import org.apache.spark.sql.types.{MetadataBuilder, StructField, StructType}
 
-
-case class HanaSQLCluster(conf: HanaSQLConf)  {
+case class HanaDbCluster(conf: HanaDbConf)  {
   val ER_DUP_FIELDNAME = 1060
 
-  def getHanaInfo: HanaSQLConnectionInfo = conf.hanaConnectionInfo
+  def getHanaInfo: HanaDbConnectionInfo = conf.hanaConnectionInfo
 
-  def jdbcClient : HANAJdbcClient = HANAJdbcClient(conf)
+  def jdbcClient : HanaDbJdbcClient = HanaDbJdbcClient(conf)
 
   def withHanaConn[T]: ((Connection) => T) => T =
-    HanaSQLConnectionPool.withConnection(getHanaInfo)
+    HanaDbConnectionPool.withConnection(getHanaInfo)
 
   def getConnection: Connection = {
-    HanaSQLConnectionPool.connect(getHanaInfo)
+    HanaDbConnectionPool.connect(getHanaInfo)
   }
 
 
+  def getQuerySchema(query: String, queryParams: Seq[Any]=Nil): StructType = {
+    val metaDataBuilder : MetadataBuilder = new MetadataBuilder
+    WithCloseables(getConnection) { conn =>
+      WithCloseables(conn.createStatement()) { stmt =>
+        WithCloseables(stmt.executeQuery(s"SELECT * FROM $query LIMIT 0")) { rs =>
+          val metadata = rs.getMetaData
+          val columnCount = metadata.getColumnCount
+
+          StructType(
+            Range(0, columnCount)
+              .map(i => StructField(
+                metadata.getColumnName(i + 1),
+                TypeConversions.JDBCTypeToDataFrameType(metadata, i + 1),
+                true, metaDataBuilder.build())
+              )
+          )
+        }
+      }
+    }
+  }
 
   def getQuerySchema(tableName: String, namespace: Option[String]): StructType = {
     ExecuteWithExceptions[StructType, Exception, HANAJdbcException](

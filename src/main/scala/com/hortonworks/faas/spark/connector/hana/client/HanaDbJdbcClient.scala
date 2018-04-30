@@ -1,9 +1,10 @@
-package com.hortonworks.faas.spark.connector.client.hana
+package com.hortonworks.faas.spark.connector.hana.client
 
-import java.sql.{Connection,  ResultSet}
+import java.sql.{Connection, ResultSet}
 
-import com.hortonworks.faas.spark.connector.config.hana.{ HanaSQLConf, HanaSQLConnectionPool}
-import com.hortonworks.faas.spark.connector.util.hana._
+import com.hortonworks.faas.spark.connector.hana.client.hana.metaAttr
+import com.hortonworks.faas.spark.connector.hana.config.{HanaDbConf, HanaDbConnectionPool}
+import com.hortonworks.faas.spark.connector.hana.util.{HANAJdbcConnectionException, HANAJdbcException, HanaDbConnectionInfo}
 import com.hortonworks.faas.spark.connector.util.{ExecuteWithExceptions, WithCloseables}
 import org.apache.avro.Schema
 import org.apache.avro.generic.{GenericData, GenericRecord}
@@ -11,18 +12,18 @@ import org.slf4j.{Logger, LoggerFactory}
 
 import scala.util.{Failure, Success, Try}
 
-case class HANAJdbcClient(hanaConfiguration: HanaSQLConf)  {
-  private val log: Logger = LoggerFactory.getLogger(classOf[HANAJdbcClient])
+case class HanaDbJdbcClient(hanaConfiguration: HanaDbConf)  {
+  private val log: Logger = LoggerFactory.getLogger(classOf[HanaDbJdbcClient])
 
   protected val driver: String = "com.sap.db.jdbc.Driver"
 
   private val CONNECTION_FAIL_R = ".*Failed to open connection.*".r
 
-  def getHanaInfo: HanaSQLConnectionInfo = hanaConfiguration.hanaConnectionInfo
+  def getHanaInfo: HanaDbConnectionInfo = hanaConfiguration.hanaConnectionInfo
 
 
   def withHanaConn[T]: ((Connection) => T) => T =
-    HanaSQLConnectionPool.withConnection(getHanaInfo)
+    HanaDbConnectionPool.withConnection(getHanaInfo)
 
   /**
    * Checks whether the provided exception is a connection opening failure one.
@@ -67,7 +68,7 @@ case class HANAJdbcClient(hanaConfiguration: HanaSQLConf)  {
    * @return The created JDBC [[Connection]] object
    */
    def getConnection: Connection = {
-     HanaSQLConnectionPool.connect(getHanaInfo)
+     HanaDbConnectionPool.connect(getHanaInfo)
   }
 
   /**

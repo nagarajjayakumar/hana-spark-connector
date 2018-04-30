@@ -2,7 +2,7 @@ package com.hortonworks.faas.spark.connector.util
 
 import java.sql.{Connection, PreparedStatement, ResultSet, Statement}
 
-import com.hortonworks.faas.spark.connector.dataframe.hana.TypeConversions
+import com.hortonworks.faas.spark.connector.hana.dataframe.TypeConversions
 import org.apache.spark.sql.Row
 
 object JDBCImplicits {

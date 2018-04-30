@@ -1,32 +1,32 @@
-package com.hortonworks.faas.spark.connector.rdd.hana
+package com.hortonworks.faas.spark.connector.hana.rdd
 
 import java.sql.{Connection, ResultSet}
 
-import com.hortonworks.faas.spark.connector.config.hana.HanaSQLCluster
-import com.hortonworks.faas.spark.connector.util.hana.HanaSQLConnectionInfo
+import com.hortonworks.faas.spark.connector.hana.config.HanaDbCluster
+import com.hortonworks.faas.spark.connector.hana.util.HanaDbConnectionInfo
 import org.apache.spark.rdd.RDD
 import org.apache.spark.{Partition, SparkContext, TaskContext}
 
 import scala.reflect.ClassTag
 import scala.util.Try
 
-class HanaSQLRDDPartition(override val index: Int,
-                         val connectionInfo: HanaSQLConnectionInfo,
-                         val query: Option[String]=None
+class HanaDbRDDPartition(override val index: Int,
+                          val connectionInfo: HanaDbConnectionInfo,
+                          val query: Option[String]=None
                         ) extends Partition
 
 case class ExplainRow(selectType: String, extra: String, query: String)
 
 /**
-  * An [[org.apache.spark.rdd.RDD]] that can read data from a HanaSQL database based on a SQL query.
+  * An [[org.apache.spark.rdd.RDD]] that can read data from a HanaDb database based on a SQL query.
   *
   * If the given query supports it, this RDD will read data directly from the
-  * HanaSQL cluster's leaf nodes rather than from the master aggregator, which
+  * HanaDb cluster's leaf nodes rather than from the master aggregator, which
   * typically results in much faster reads.  However, if the given query does
   * not support this (e.g. queries involving joins or GROUP BY operations), the
   * results will be returned in a single partition.
   *
-  * @param cluster A connected HanaSQLCluster instance.
+  * @param cluster A connected HanaDbCluster instance.
   * @param sql The text of the query. Can be a prepared statement template,
   *    in which case parameters from sqlParams are substituted.
   * @param sqlParams The parameters of the query if sql is a template.
@@ -37,14 +37,14 @@ case class ExplainRow(selectType: String, extra: String, query: String)
   *   takes care of calling next.  The default maps a ResultSet to an array of
   *   Any.
   */
-case class HanaSQLRDD[T: ClassTag](@transient sc: SparkContext,
-                                  cluster: HanaSQLCluster,
-                                  sql: String,
-                                  sqlParams: Seq[Any] = Nil,
-                                  databaseName: Option[String] = None,
-                                  mapRow: (ResultSet) => T = HanaSQLRDD.resultSetToArray _,
-                                  disablePartitionPushdown: Boolean = false,
-                                  enableStreaming: Boolean = false
+case class HanaDbRDD[T: ClassTag](@transient sc: SparkContext,
+                                   cluster: HanaDbCluster,
+                                   sql: String,
+                                   sqlParams: Seq[Any] = Nil,
+                                   databaseName: Option[String] = None,
+                                   mapRow: (ResultSet) => T = HanaDbRDD.resultSetToArray _,
+                                   disablePartitionPushdown: Boolean = false,
+                                   enableStreaming: Boolean = false
                                  ) extends RDD[T](sc, Nil){
 
   override def getPartitions: Array[Partition] = {
@@ -72,9 +72,9 @@ case class HanaSQLRDD[T: ClassTag](@transient sc: SparkContext,
                       val connInfo = cluster.getMasterInfo.copy(
                         dbHost = host,
                         dbPort = port,
-                        dbName = HanaSQLRDD.getDatabaseShardName(dbName, ordinal))
+                        dbName = HanaDbRDD.getDatabaseShardName(dbName, ordinal))
 
-                      new HanaSQLRDDPartition(ordinal, connInfo, Some(partitionQuery))
+                      new HanaDbRDDPartition(ordinal, connInfo, Some(partitionQuery))
                     })
                     .toArray.sortBy(_.index).asInstanceOf[Array[Partition]]
                 }
@@ -90,10 +90,10 @@ case class HanaSQLRDD[T: ClassTag](@transient sc: SparkContext,
   }
 
   private def getSinglePartition: Array[Partition] = {
-    Array[Partition](new HanaSQLRDDPartition(0, cluster.getRandomAggregatorInfo))
+    Array[Partition](new HanaDbRDDPartition(0, cluster.getRandomAggregatorInfo))
   }
 
-  // Generate EXPLAIN output by one of two methods, depending on the version of HanaSQL.
+  // Generate EXPLAIN output by one of two methods, depending on the version of HanaDb.
   // Inspect the explain output to determine if we can safely pushdown the query to the leaves.
   private def getPartitionQueryFn(conn: Connection, dbName: String): Option[(Int) => String] = {
     val explainExtendedSQL = "EXPLAIN EXTENDED " + sql
@@ -137,7 +137,7 @@ case class HanaSQLRDD[T: ClassTag](@transient sc: SparkContext,
 
     // Here, we only pushdown queries which have a single SIMPLE
     // query, and are a Simple Iterator on the agg.
-    val isSimpleIterator = explainRows.headOption.exists(_.extra == "HanaSQL: Simple Iterator -> Network")
+    val isSimpleIterator = explainRows.headOption.exists(_.extra == "HanaDb: Simple Iterator -> Network")
     val hasMultipleRows = explainRows.length > 1
     val noDResult = !explainRows.exists(_.selectType == "DRESULT")
 
@@ -145,7 +145,7 @@ case class HanaSQLRDD[T: ClassTag](@transient sc: SparkContext,
       val template = explainRows(1).query
 
       Some(partitionIdx =>
-        HanaSQLRDD.getPerPartitionSql(template, dbName, partitionIdx)
+        HanaDbRDD.getPerPartitionSql(template, dbName, partitionIdx)
       )
     } else {
       None
@@ -240,7 +240,7 @@ case class HanaSQLRDD[T: ClassTag](@transient sc: SparkContext,
       val generatedSelectClause = q.slice(selectIndex, q.length)
 
       Some(partitionIdx =>
-        HanaSQLRDD.getPerPartitionSql(generatedSelectClause, dbName, partitionIdx)
+        HanaDbRDD.getPerPartitionSql(generatedSelectClause, dbName, partitionIdx)
       )
     })
   }
@@ -248,14 +248,14 @@ case class HanaSQLRDD[T: ClassTag](@transient sc: SparkContext,
   override def compute(sparkPartition: Partition, context: TaskContext): Iterator[T] = new NextIterator[T] {
     context.addTaskCompletionListener(context => closeIfNeeded())
 
-    val partition: HanaSQLRDDPartition = sparkPartition.asInstanceOf[HanaSQLRDDPartition]
+    val partition: HanaDbRDDPartition = sparkPartition.asInstanceOf[HanaDbRDDPartition]
 
     val (query, queryParams) = partition.query match {
       case Some(partitionQuery) => (partitionQuery, Nil)
       case None => (sql, sqlParams)
     }
 
-    val conn = HanaSQLConnectionPool.connect(partition.connectionInfo)
+    val conn = HanaDbConnectionPool.connect(partition.connectionInfo)
     val stmt = conn.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
     if (enableStreaming) {
       // setFetchSize(Integer.MIN_VALUE) enables row-by-row streaming for the MySQL JDBC connector
@@ -295,13 +295,13 @@ case class HanaSQLRDD[T: ClassTag](@transient sc: SparkContext,
   }
 
   override def getPreferredLocations(sparkPartition: Partition): Seq[String] = {
-    val partition = sparkPartition.asInstanceOf[HanaSQLRDDPartition]
+    val partition = sparkPartition.asInstanceOf[HanaDbRDDPartition]
     Seq(partition.connectionInfo.dbHost)
   }
 
 }
 
-object HanaSQLRDD {
+object HanaDbRDD {
   def resultSetToArray(rs: ResultSet): Array[Any] = rs.
 
   def getDatabaseShardName(dbName: String, idx: Int): String = {
@@ -310,7 +310,7 @@ object HanaSQLRDD {
 
   def getPerPartitionSql(template: String, dbName: String, idx: Int): String = {
     // The EXPLAIN query that we run in getPartitions gives us the SQL query
-    // that will be run against HanaSQL partition number 0; we want to run this
+    // that will be run against HanaDb partition number 0; we want to run this
     // query against an arbitrary partition, so we replace the database name
     // in this partition (which is in the form {dbName}_0) with {dbName}_{i}
     // where i is our partition index.

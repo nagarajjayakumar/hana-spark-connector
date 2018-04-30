@@ -1,4 +1,4 @@
-package com.hortonworks.faas.spark.connector.client.hana
+package com.hortonworks.faas.spark.connector.hana.client.hana
 
 
 // It overrides a JDBC class - keep it starting with lowercase

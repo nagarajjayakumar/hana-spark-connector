@@ -1,6 +1,6 @@
 package com.hortonworks.faas.spark.connector.config
 
-import com.hortonworks.faas.spark.connector.util.hana.HANAConfigMissingException
+import com.hortonworks.faas.spark.connector.hana.util.HANAConfigMissingException
 
 
 object BaseConfigConstants {

@@ -1,4 +1,4 @@
-package com.hortonworks.faas.spark.connector.client.hana
+package com.hortonworks.faas.spark.connector.hana.client
 
 /**
   * A row from of the result of a query to HANA's TABLE_COLUMNS system table.

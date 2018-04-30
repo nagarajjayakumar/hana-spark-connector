@@ -1,6 +1,5 @@
 package com.hortonworks.faas.spark.connector.config
 
-
 abstract class BaseConfig(props: Map[String, String]) {
 
 

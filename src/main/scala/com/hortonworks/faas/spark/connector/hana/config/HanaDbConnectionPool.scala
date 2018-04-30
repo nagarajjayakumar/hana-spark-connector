@@ -1,17 +1,17 @@
-package com.hortonworks.faas.spark.connector.config.hana
+package com.hortonworks.faas.spark.connector.hana.config
 
 import java.sql.{Connection, DriverManager}
 import java.util.concurrent.ConcurrentHashMap
 
+import com.hortonworks.faas.spark.connector.hana.util.HanaDbConnectionInfo
 import com.hortonworks.faas.spark.connector.util.Loan
-import com.hortonworks.faas.spark.connector.util.hana.HanaSQLConnectionInfo
 import org.apache.commons.dbcp2.BasicDataSource
 
-object HanaSQLConnectionPool {
+object HanaDbConnectionPool {
   val DEFAULT_JDBC_LOGIN_TIMEOUT = 10 //seconds
-  val pools: ConcurrentHashMap[HanaSQLConnectionInfo, BasicDataSource] = new ConcurrentHashMap
+  val pools: ConcurrentHashMap[HanaDbConnectionInfo, BasicDataSource] = new ConcurrentHashMap
 
-  def createPool(info: HanaSQLConnectionInfo): BasicDataSource = {
+  def createPool(info: HanaDbConnectionInfo): BasicDataSource = {
     DriverManager.setLoginTimeout(DEFAULT_JDBC_LOGIN_TIMEOUT)
 
     val newPool = new BasicDataSource
@@ -26,7 +26,7 @@ object HanaSQLConnectionPool {
     newPool
   }
 
-  def connect(info: HanaSQLConnectionInfo): Connection = {
+  def connect(info: HanaDbConnectionInfo): Connection = {
     if (!pools.containsKey(info)) {
       val newPool = createPool(info)
       pools.putIfAbsent(info, newPool)
@@ -34,6 +34,6 @@ object HanaSQLConnectionPool {
     pools.get(info).getConnection
   }
 
-  def withConnection[T](info: HanaSQLConnectionInfo)(handle: Connection => T): T =
+  def withConnection[T](info: HanaDbConnectionInfo)(handle: Connection => T): T =
     Loan[Connection](connect(info)).to(handle)
 }
