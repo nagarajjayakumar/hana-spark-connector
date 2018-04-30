@@ -19,7 +19,7 @@ package object connector {
     def hanaDbConf: HanaDbConf = HanaDbConf(sparkSession.conf)
 
     def setDatabase(dbName: String): Unit = {
-      sparkSession.conf.set("spark.HanaDb.defaultDatabase", dbName)
+      sparkSession.conf.set("spark.hanadb.defaultDatabase", dbName)
     }
     def getDatabase: String = hanaDbConf.defaultDBName
 
