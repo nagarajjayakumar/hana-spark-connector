@@ -1,15 +1,15 @@
 package com.hortonworks.faas.spark.connector.hana.rdd
 
-import java.sql.{ResultSet}
+import java.sql.ResultSet
 
 import com.hortonworks.faas.spark.connector.hana.config.{HanaDbCluster, HanaDbConnectionPool}
 import com.hortonworks.faas.spark.connector.hana.util.HanaDbConnectionInfo
+import com.hortonworks.faas.spark.connector.util.JDBCImplicits._
+import com.hortonworks.faas.spark.connector.util.NextIterator
 import org.apache.spark.rdd.RDD
 import org.apache.spark.{Partition, SparkContext, TaskContext}
 
 import scala.reflect.ClassTag
-import com.hortonworks.faas.spark.connector.util.JDBCImplicits._
-import com.hortonworks.faas.spark.connector.util.NextIterator
 
 
 
