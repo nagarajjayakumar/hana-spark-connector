@@ -6,7 +6,7 @@ import org.apache.spark.sql.SQLContext
 import org.apache.spark.sql.catalyst.parser.CatalystSqlParser
 import org.apache.spark.sql.sources.{BaseRelation, DataSourceRegister, RelationProvider}
 
-/
+
 /**
   * This class is a proxy for the actual implementation in org.apache.spark.
   * It allows you to write data to HanaDb via the Spark RelationProvider API.

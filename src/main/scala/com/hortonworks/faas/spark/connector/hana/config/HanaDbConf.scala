@@ -10,16 +10,16 @@ import org.apache.spark.sql.RuntimeConfig
  * Configuration for a HanaDb cluster. By default these parameters are set by the corresponding
  * value in the Spark configuration.
  *
- * @param hanaHost Hostname of the HanaDb dataframe Aggregator. Corresponds to "spark.HanaDb.host"
+ * @param hanaHost Hostname of the HanaDb dataframe Aggregator. Corresponds to "spark.hanadb.host"
  *                   in the Spark configuration.
- * @param hanaPort Port of the HanaDb dataframe Aggregator. Corresponds to "spark.HanaDb.port"
+ * @param hanaPort Port of the HanaDb dataframe Aggregator. Corresponds to "spark.hanadb.port"
  *                   in the Spark configuration.
  * @param user Username to use when connecting to the HanaDb dataframe Aggregator. Corresponds to
- *             "spark.HanaDb.user" in the Spark configuration.
+ *             "spark.hanadb.user" in the Spark configuration.
  * @param password Password to use when connecting to the HanaDb dataframe Aggregator. Corresponds to
- *                 "sparkk.HanaDb.password" in the Spark configuration.
+ *                 "sparkk.hanadb.password" in the Spark configuration.
  * @param defaultDBName The default database to use when connecting to the cluster. Corresponds to
- *                      "spark.HanaDb.defaultDatabase" in the Spark configuration.
+ *                      "spark.hanadb.defaultDatabase" in the Spark configuration.
  */
 case class HanaDbConf(hanaHost: String,
                       hanaPort: Int,
@@ -44,10 +44,10 @@ object HanaDbConf {
 
   def apply(runtimeConf: RuntimeConfig): HanaDbConf =
     HanaDbConf(
-      hanaHost = runtimeConf.get("spark.HanaDb.host", getDefaultHost),
-      hanaPort = runtimeConf.getOption("spark.HanaDb.port").map(_.toInt).getOrElse(DEFAULT_PORT),
-      user = runtimeConf.get("spark.HanaDb.user", DEFAULT_USER),
-      password = runtimeConf.get("spark.HanaDb.password", DEFAULT_PASS),
-      defaultDBName = runtimeConf.get("spark.HanaDb.defaultDatabase",DEFAULT_DATABASE)
+      hanaHost = runtimeConf.get("spark.hanadb.host", getDefaultHost),
+      hanaPort = runtimeConf.getOption("spark.hanadb.port").map(_.toInt).getOrElse(DEFAULT_PORT),
+      user = runtimeConf.get("spark.hanadb.user", DEFAULT_USER),
+      password = runtimeConf.get("spark.hanadb.password", DEFAULT_PASS),
+      defaultDBName = runtimeConf.get("spark.hanadb.defaultDatabase",DEFAULT_DATABASE)
       )
 }
