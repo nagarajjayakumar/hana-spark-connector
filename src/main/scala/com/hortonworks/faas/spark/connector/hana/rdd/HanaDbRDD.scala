@@ -75,7 +75,7 @@ case class HanaDbRDD[T: ClassTag](@transient sc: SparkContext,
 
                       val partitionQuery = pq(ordinal)
 
-                      val connInfo = cluster.getMasterInfo.copy(
+                      val connInfo = cluster.getHanaInfo.copy(
                         dbHost = host,
                         dbPort = port,
                         dbName = HanaDbRDD.getDatabaseShardName(dbName, ordinal))
@@ -96,7 +96,7 @@ case class HanaDbRDD[T: ClassTag](@transient sc: SparkContext,
   }
 
   private def getSinglePartition: Array[Partition] = {
-    Array[Partition](new HanaDbRDDPartition(0, cluster))
+    Array[Partition](new HanaDbRDDPartition(0, cluster.getHanaInfo))
   }
 
   // Generate EXPLAIN output by one of two methods, depending on the version of HanaDb.
