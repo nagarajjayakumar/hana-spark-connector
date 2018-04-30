@@ -22,7 +22,7 @@ case class HanaDbQueryRelation(cluster: HanaDbCluster,
 
   // Partition pushdown requires a namespace name.
   // If one was not supplied by the user in the option parameters,
-  // Check the Spark configuration settings for "spark.HanaDb.defaultDatabase"
+  // Check the Spark configuration settings for "spark.hanadb.defaultDatabase"
   val namespace: Option[String] = {
     namespaceName match {
       case Some(s) => namespaceName
