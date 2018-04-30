@@ -13,19 +13,19 @@ import scala.collection.mutable.ListBuffer
 
 case class HanaDbQueryRelation(cluster: HanaDbCluster,
                                 query: String,
-                                databaseName: Option[String],
+                                namespaceName: Option[String],
                                 sqlContext: SQLContext,
                                 disablePartitionPushdown: Boolean,
                                 enableStreaming: Boolean) extends BaseRelation with TableScan {
 
   override def schema: StructType = cluster.getQuerySchema(query)
 
-  // Partition pushdown requires a database name.
+  // Partition pushdown requires a namespace name.
   // If one was not supplied by the user in the option parameters,
   // Check the Spark configuration settings for "spark.HanaDb.defaultDatabase"
-  val database: Option[String] = {
-    databaseName match {
-      case Some(s) => databaseName
+  val namespace: Option[String] = {
+    namespaceName match {
+      case Some(s) => namespaceName
       case None => {
           sqlContext.sparkSession.hanaDbConf.defaultDBName match {
           case "" => None
@@ -40,7 +40,7 @@ case class HanaDbQueryRelation(cluster: HanaDbCluster,
       sqlContext.sparkContext,
       cluster,
       query,
-      databaseName = database,
+      namespaceName = namespace,
       mapRow=_.toRow,
       disablePartitionPushdown=disablePartitionPushdown,
       enableStreaming=enableStreaming
@@ -57,7 +57,7 @@ case class HanaDbTableRelation(cluster: HanaDbCluster,
     with PrunedFilteredScan
      {
 
-  val database: Option[String] = tableIdentifier.database
+  val namespace: Option[String] = tableIdentifier.namespace
 
   override def schema: StructType = cluster.getQuerySchema(s"SELECT * FROM ${tableIdentifier.quotedString}")
 
@@ -67,7 +67,7 @@ case class HanaDbTableRelation(cluster: HanaDbCluster,
     HanaDbRDD(sqlContext.sparkContext,
       cluster,
       queryString,
-      databaseName=database,
+      namespaceName=namespace,
       mapRow=_.toRow,
       disablePartitionPushdown=disablePartitionPushdown,
       enableStreaming=enableStreaming)
@@ -107,7 +107,7 @@ case class HanaDbTableRelation(cluster: HanaDbCluster,
       cluster,
       queryString,
       sqlParams=params,
-      databaseName=database,
+      namespaceName=namespace,
       mapRow=_.toRow,
       disablePartitionPushdown=disablePartitionPushdown,
       enableStreaming=enableStreaming)

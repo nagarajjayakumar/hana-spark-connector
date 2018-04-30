@@ -29,6 +29,8 @@
         <common.dbcp2.version>2.1.1</common.dbcp2.version>
         <ngdbc.version>2.1.2</ngdbc.version>
 
+        <spray.version>1.3.4</spray.version>
+
     </properties>
 
     <dependencies>
@@ -185,6 +187,14 @@
             <artifactId>ngdbc</artifactId>
             <version>${ngdbc.version}</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.spray/spray-json -->
+        <dependency>
+            <groupId>io.spray</groupId>
+            <artifactId>spray-json_${scala.abi.version}</artifactId>
+            <version>${spray.version}</version>
+        </dependency>
+
 
     </dependencies>
 

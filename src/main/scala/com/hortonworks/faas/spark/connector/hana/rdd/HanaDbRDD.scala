@@ -2,13 +2,19 @@ package com.hortonworks.faas.spark.connector.hana.rdd
 
 import java.sql.{Connection, ResultSet}
 
-import com.hortonworks.faas.spark.connector.hana.config.HanaDbCluster
+import com.hortonworks.faas.spark.connector.hana.config.{HanaDbCluster, HanaDbConnectionPool}
 import com.hortonworks.faas.spark.connector.hana.util.HanaDbConnectionInfo
 import org.apache.spark.rdd.RDD
 import org.apache.spark.{Partition, SparkContext, TaskContext}
 
 import scala.reflect.ClassTag
 import scala.util.Try
+import com.hortonworks.faas.spark.connector.util.JDBCImplicits._
+import com.hortonworks.faas.spark.connector.util.NextIterator
+import spray.json.JsValue
+import spray.json._
+import spray.json.DefaultJsonProtocol._
+
 
 class HanaDbRDDPartition(override val index: Int,
                           val connectionInfo: HanaDbConnectionInfo,
@@ -30,7 +36,7 @@ case class ExplainRow(selectType: String, extra: String, query: String)
   * @param sql The text of the query. Can be a prepared statement template,
   *    in which case parameters from sqlParams are substituted.
   * @param sqlParams The parameters of the query if sql is a template.
-  * @param databaseName Optionally provide a database name for this RDD.
+  * @param namespaceName Optionally provide a database name for this RDD.
   *                     This is required for Partition Pushdown
   * @param mapRow A function from a ResultSet to a single row of the desired
   *   result type(s).  This should only call getInt, getString, etc; the RDD
@@ -41,7 +47,7 @@ case class HanaDbRDD[T: ClassTag](@transient sc: SparkContext,
                                    cluster: HanaDbCluster,
                                    sql: String,
                                    sqlParams: Seq[Any] = Nil,
-                                   databaseName: Option[String] = None,
+                                   namespaceName: Option[String] = None,
                                    mapRow: (ResultSet) => T = HanaDbRDD.resultSetToArray _,
                                    disablePartitionPushdown: Boolean = false,
                                    enableStreaming: Boolean = false
@@ -51,11 +57,11 @@ case class HanaDbRDD[T: ClassTag](@transient sc: SparkContext,
     if(disablePartitionPushdown) {
       getSinglePartition
     } else {
-      // databaseName is required for partition pushdown
-      databaseName match {
+      // namespaceName is required for partition pushdown
+      namespaceName match {
         case None => getSinglePartition
         case Some(dbName) => {
-          cluster.withMasterConn[Array[Partition]](conn => {
+          cluster.withHanaConn[Array[Partition]](conn => {
             val partitionQueryFn = getPartitionQueryFn(conn, dbName)
 
             conn.withStatement(stmt => {
@@ -90,7 +96,7 @@ case class HanaDbRDD[T: ClassTag](@transient sc: SparkContext,
   }
 
   private def getSinglePartition: Array[Partition] = {
-    Array[Partition](new HanaDbRDDPartition(0, cluster.getRandomAggregatorInfo))
+    Array[Partition](new HanaDbRDDPartition(0, cluster))
   }
 
   // Generate EXPLAIN output by one of two methods, depending on the version of HanaDb.
@@ -302,7 +308,7 @@ case class HanaDbRDD[T: ClassTag](@transient sc: SparkContext,
 }
 
 object HanaDbRDD {
-  def resultSetToArray(rs: ResultSet): Array[Any] = rs.
+  def resultSetToArray(rs: ResultSet): Array[Any] = rs.toArray
 
   def getDatabaseShardName(dbName: String, idx: Int): String = {
     dbName + "_" + idx
