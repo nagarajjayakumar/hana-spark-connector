@@ -27,7 +27,7 @@ class DefaultSource extends RelationProvider
 
     val enableStreaming: Boolean = DefaultSource.getValueAsBoolean(parameters, "enableStreaming")
 
-    val disablePartitionPushdown : Boolean = false
+    val disablePartitionPushdown : Boolean = DefaultSource.getValueAsBoolean(parameters, "disablePartitionPushdown")
 
     parameters.get("path") match {
       case Some(path) => HanaDbTableRelation(cluster, DefaultSource.getTableIdentifier(path), sqlContext, disablePartitionPushdown, enableStreaming)
