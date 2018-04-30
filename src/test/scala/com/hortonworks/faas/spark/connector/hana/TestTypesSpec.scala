@@ -1,11 +1,10 @@
 // scalastyle:off magic.number file.size.limit regex
 
-package com.HanaDb.spark.connector.sql
+package com.hortonworks.faas.spark.connector.hana
 
 import java.math.BigDecimal
 import java.sql.{Date, Timestamp}
 
-import com.hortonworks.faas.spark.connector.hana.{SharedHanaDbContext, TestUtils}
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.{Column, DataFrame, Row}

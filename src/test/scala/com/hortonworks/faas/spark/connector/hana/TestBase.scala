@@ -20,11 +20,11 @@ trait TestBase {
     "connector_tests_" + hostMD5.slice(0, 2).map("%02x".format(_)).mkString
   }
 
-  val masterHost = sys.env.get("HanaDb_HOST_TEST").getOrElse("127.0.0.1")
+  val masterHost = sys.env.get("HANADB_HOST_TEST").getOrElse("127.0.0.1")
   val masterConnectionInfo: HanaDbConnectionInfo =
-    HanaDbConnectionInfo(masterHost, 3306, "root", "", dbName) // scalastyle:ignore
+    HanaDbConnectionInfo(masterHost, 3306, "root", "passw0rd", dbName) // scalastyle:ignore
   val leafConnectionInfo: HanaDbConnectionInfo =
-    HanaDbConnectionInfo(masterHost, 3307, "root", "", dbName) // scalastyle:ignore
+    HanaDbConnectionInfo(masterHost, 3306, "root", "passw0rd", dbName) // scalastyle:ignore
 
   var ss: SparkSession = null
   var sc: SparkContext = null
