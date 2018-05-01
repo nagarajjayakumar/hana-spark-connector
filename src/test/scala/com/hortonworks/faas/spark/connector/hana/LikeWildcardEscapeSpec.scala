@@ -19,7 +19,7 @@ class LikeWildcardEscapeSpec extends FlatSpec with SharedHanaDbContext with Matc
 
     val escapePercentResult = ss
       .read
-      .format("com.HanaDb.spark.connector")
+      .format("com.hortonworks.faas.spark.connector")
       .options(Map( "path" -> (dbName + ".wildcardEscape")))
       .load().filter($"data".contains("10%"))
       .collect()
@@ -34,7 +34,7 @@ class LikeWildcardEscapeSpec extends FlatSpec with SharedHanaDbContext with Matc
 
     val escapeQuoteResult = ss
       .read
-      .format("com.HanaDb.spark.connector")
+      .format("com.hortonworks.faas.spark.connector")
       .options(Map( "path" -> (dbName + ".wildcardEscape")))
       .load().filter($"data".contains("25's"))
       .collect()
@@ -49,7 +49,7 @@ class LikeWildcardEscapeSpec extends FlatSpec with SharedHanaDbContext with Matc
 
     val escapeUnderscoreResult = ss
       .read
-      .format("com.HanaDb.spark.connector")
+      .format("com.hortonworks.faas.spark.connector")
       .options(Map( "path" -> (dbName + ".wildcardEscape")))
       .load().filter($"data".contains("_31"))
       .collect()

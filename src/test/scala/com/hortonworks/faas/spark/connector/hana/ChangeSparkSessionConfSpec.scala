@@ -27,7 +27,7 @@ class ChangeSparkSessionConfSpec extends FlatSpec with SharedHanaDbContext with 
   "Changing the HanaDb settings in the SparkSession RuntimeConfig" should "be reflected in the next attempt to connect to HanaDb" in {
     val df = ss
       .read
-      .format("com.HanaDb.spark.connector")
+      .format("com.hortonworks.faas.spark.connector")
       .options(Map( "path" -> ("t")))
       .load()
 
@@ -65,7 +65,7 @@ class ChangeSparkSessionConfSpec extends FlatSpec with SharedHanaDbContext with 
     try {
       val df2 = ss
         .read
-        .format("com.HanaDb.spark.connector")
+        .format("com.hortonworks.faas.spark.connector")
         .options(Map( "path" -> ("t")))
         .load()
       assert(false, "The connection should have failed when using the new config settings")

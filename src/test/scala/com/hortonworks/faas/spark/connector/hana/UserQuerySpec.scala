@@ -20,7 +20,7 @@ class UserQuerySpec extends FlatSpec with SharedHanaDbContext{
     for (name <- Seq("t", "s", "r")) {
       val table = ss
         .read
-        .format("com.HanaDb.spark.connector")
+        .format("com.hortonworks.faas.spark.connector")
         .options(Map("query" -> ("SELECT * FROM " + dbName + "." + name)))
         .load()
 
@@ -29,7 +29,7 @@ class UserQuerySpec extends FlatSpec with SharedHanaDbContext{
 
       val table2 = ss
         .read
-        .format("com.HanaDb.spark.connector")
+        .format("com.hortonworks.faas.spark.connector")
         .options(Map("query" -> ("SELECT * FROM " + dbName + "." + name + " WHERE id < 3")))
         .load()
 
@@ -38,7 +38,7 @@ class UserQuerySpec extends FlatSpec with SharedHanaDbContext{
 
       val table3 = ss
         .read
-        .format("com.HanaDb.spark.connector")
+        .format("com.hortonworks.faas.spark.connector")
         .options(Map("query" -> ("SELECT * FROM " + dbName + "." + name + " LIMIT 10")))
         .load()
 
@@ -47,7 +47,7 @@ class UserQuerySpec extends FlatSpec with SharedHanaDbContext{
 
       val table4 = ss
         .read
-        .format("com.HanaDb.spark.connector")
+        .format("com.hortonworks.faas.spark.connector")
         .options(Map("query" -> ("SELECT * FROM " + dbName + "." + name + " ORDER BY ID LIMIT 10")))
         .load()
 
@@ -66,7 +66,7 @@ class UserQuerySpec extends FlatSpec with SharedHanaDbContext{
   "A custom-query HanaDb Dataframe" should "have more than one partition if user has specified database name" in {
     val table = ss
         .read
-        .format("com.HanaDb.spark.connector")
+        .format("com.hortonworks.faas.spark.connector")
         .options(Map("query" -> ("SELECT * FROM t"), "database" -> dbName))
         .load()
     assert(table.rdd.getNumPartitions > 1)
@@ -75,7 +75,7 @@ class UserQuerySpec extends FlatSpec with SharedHanaDbContext{
   it should "have more than one partition if user has specified defaultDB in Spark configuration" in {
     val table = ss
       .read
-      .format("com.HanaDb.spark.connector")
+      .format("com.hortonworks.faas.spark.connector")
       .options(Map("query" -> ("SELECT * FROM " + dbName + ".t")))
       .load()
     assert(table.rdd.getNumPartitions > 1)

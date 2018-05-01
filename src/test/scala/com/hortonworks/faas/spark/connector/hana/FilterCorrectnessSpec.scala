@@ -19,7 +19,7 @@ class FilterCorrectnessSpec extends FlatSpec with SharedHanaDbContext{
 
     val equalsFilterDataframe = ss
       .read
-      .format("com.HanaDb.spark.connector")
+      .format("com.hortonworks.faas.spark.connector")
       .options(Map( "path" -> (dbName + ".filtercorrectness")))
       .load()
       .filter($"id" === 2)
@@ -36,7 +36,7 @@ class FilterCorrectnessSpec extends FlatSpec with SharedHanaDbContext{
 
     val lessThanDataframe = ss
       .read
-      .format("com.HanaDb.spark.connector")
+      .format("com.hortonworks.faas.spark.connector")
       .options(Map( "path" -> (dbName + ".filtercorrectness")))
       .load()
       .filter($"id" < 4)
@@ -57,7 +57,7 @@ class FilterCorrectnessSpec extends FlatSpec with SharedHanaDbContext{
 
     val greaterThanDataframe = ss
       .read
-      .format("com.HanaDb.spark.connector")
+      .format("com.hortonworks.faas.spark.connector")
       .options(Map( "path" -> (dbName + ".filtercorrectness")))
       .load()
       .filter($"id" > 47)
@@ -76,7 +76,7 @@ class FilterCorrectnessSpec extends FlatSpec with SharedHanaDbContext{
 
     val lessThanOrEqualDataframe = ss
       .read
-      .format("com.HanaDb.spark.connector")
+      .format("com.hortonworks.faas.spark.connector")
       .options(Map( "path" -> (dbName + ".filtercorrectness")))
       .load()
       .filter($"id" <= 4)
@@ -98,7 +98,7 @@ class FilterCorrectnessSpec extends FlatSpec with SharedHanaDbContext{
 
     val greaterThanOrEqualDataframe = ss
       .read
-      .format("com.HanaDb.spark.connector")
+      .format("com.hortonworks.faas.spark.connector")
       .options(Map( "path" -> (dbName + ".filtercorrectness")))
       .load()
       .filter($"id" >= 47)
@@ -118,7 +118,7 @@ class FilterCorrectnessSpec extends FlatSpec with SharedHanaDbContext{
 
     val isNotNullDataframe = ss
       .read
-      .format("com.HanaDb.spark.connector")
+      .format("com.hortonworks.faas.spark.connector")
       .options(Map( "path" -> (dbName + ".filtercorrectness")))
       .load()
       .filter($"data".isNotNull)
@@ -134,7 +134,7 @@ class FilterCorrectnessSpec extends FlatSpec with SharedHanaDbContext{
 
     val isNullDataframe = ss
       .read
-      .format("com.HanaDb.spark.connector")
+      .format("com.hortonworks.faas.spark.connector")
       .options(Map( "path" -> (dbName + ".filtercorrectness")))
       .load()
       .filter($"data".isNull)
@@ -150,7 +150,7 @@ class FilterCorrectnessSpec extends FlatSpec with SharedHanaDbContext{
 
     val stringStartsWithDataframe = ss
       .read
-      .format("com.HanaDb.spark.connector")
+      .format("com.hortonworks.faas.spark.connector")
       .options(Map( "path" -> (dbName + ".filtercorrectness")))
       .load()
       .filter($"data".startsWith("test_data_1"))
@@ -170,7 +170,7 @@ class FilterCorrectnessSpec extends FlatSpec with SharedHanaDbContext{
 
     val stringEndsWithDataframe = ss
       .read
-      .format("com.HanaDb.spark.connector")
+      .format("com.hortonworks.faas.spark.connector")
       .options(Map( "path" -> (dbName + ".filtercorrectness")))
       .load()
       .filter($"data".endsWith("0"))
@@ -191,7 +191,7 @@ class FilterCorrectnessSpec extends FlatSpec with SharedHanaDbContext{
 
     val stringContainsDataframe = ss
       .read
-      .format("com.HanaDb.spark.connector")
+      .format("com.hortonworks.faas.spark.connector")
       .options(Map( "path" -> (dbName + ".filtercorrectness")))
       .load()
       .filter($"data".contains("5"))
@@ -213,7 +213,7 @@ class FilterCorrectnessSpec extends FlatSpec with SharedHanaDbContext{
 
     val inDataframe = ss
       .read
-      .format("com.HanaDb.spark.connector")
+      .format("com.hortonworks.faas.spark.connector")
       .options(Map( "path" -> (dbName + ".filtercorrectness")))
       .load()
       .filter($"data".isin(items:_*)) // according to documentation, isin takes a vararg, not a list
@@ -233,7 +233,7 @@ class FilterCorrectnessSpec extends FlatSpec with SharedHanaDbContext{
 
     val notDataframe = ss
       .read
-      .format("com.HanaDb.spark.connector")
+      .format("com.hortonworks.faas.spark.connector")
       .options(Map( "path" -> (dbName + ".filtercorrectness")))
       .load()
       .filter(not($"id" < 40))
@@ -255,7 +255,7 @@ class FilterCorrectnessSpec extends FlatSpec with SharedHanaDbContext{
 
     val orDataframe = ss
       .read
-      .format("com.HanaDb.spark.connector")
+      .format("com.hortonworks.faas.spark.connector")
       .options(Map( "path" -> (dbName + ".filtercorrectness")))
       .load()
       .filter(($"id" === 2) || ($"id" === 4))
@@ -274,7 +274,7 @@ class FilterCorrectnessSpec extends FlatSpec with SharedHanaDbContext{
 
     val andDataframe = ss
       .read
-      .format("com.HanaDb.spark.connector")
+      .format("com.hortonworks.faas.spark.connector")
       .options(Map( "path" -> (dbName + ".filtercorrectness")))
       .load()
       .filter(($"id" > 10) && ($"id" < 14))

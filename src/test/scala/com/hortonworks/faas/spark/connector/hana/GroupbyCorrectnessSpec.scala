@@ -15,7 +15,7 @@ class GroupbyCorrectnessSpec extends FlatSpec with SharedHanaDbContext{
   "A query with groupby" should "not push the query down to the leaves" in {
     val groupbyDataframe = ss
       .read
-      .format("com.HanaDb.spark.connector")
+      .format("com.hortonworks.faas.spark.connector")
       .options(Map( "query" -> s"select data,count(*) from ${dbName}.groupbycorrectness group by data"))
       .load()
 

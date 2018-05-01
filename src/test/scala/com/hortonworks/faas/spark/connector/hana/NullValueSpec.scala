@@ -18,7 +18,7 @@ class NullValueSpec extends FlatSpec with SharedHanaDbContext with Matchers {
 
     val result = ss
       .read
-      .format("com.HanaDb.spark.connector")
+      .format("com.hortonworks.faas.spark.connector")
       .options(Map( "path" -> (dbName + ".t")))
       .load()
       .collect()(0)

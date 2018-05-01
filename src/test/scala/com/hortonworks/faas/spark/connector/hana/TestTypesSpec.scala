@@ -88,7 +88,7 @@ class TestTypesSpec extends FlatSpec with SharedHanaDbContext{
 
     val schema = ss
       .read
-      .format("com.HanaDb.spark.connector")
+      .format("com.hortonworks.faas.spark.connector")
       .options(Map( "path" -> (dbName + ".all_types")))
       .load()
       .schema
@@ -100,7 +100,7 @@ class TestTypesSpec extends FlatSpec with SharedHanaDbContext{
 
     val all_types_df =  ss
       .read
-      .format("com.HanaDb.spark.connector")
+      .format("com.hortonworks.faas.spark.connector")
       .options(Map( "path" -> (dbName + ".all_types")))
       .load()
 

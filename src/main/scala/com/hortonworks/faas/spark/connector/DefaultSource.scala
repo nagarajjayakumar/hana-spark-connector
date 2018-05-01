@@ -12,7 +12,7 @@ import org.apache.spark.sql.sources.{BaseRelation, DataSourceRegister, RelationP
   * It allows you to write data to HanaDb via the Spark RelationProvider API.
   *
   * Example:
-  *   df.write.format("com.HanaDb.spark.connector").save("foo.bar")
+  *   df.write.format("com.hortonworks.faas.spark.connector").save("foo.bar")
   */
 class DefaultSource extends RelationProvider
    with DataSourceRegister{
