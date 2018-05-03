@@ -4,6 +4,7 @@ import java.net.InetAddress
 import java.security.MessageDigest
 import java.sql.{Connection, PreparedStatement, Statement}
 
+import com.hortonworks.faas.spark.connector.config.TestMysqlDbConnectionPool
 import com.hortonworks.faas.spark.connector.hana.config.HanaDbConnectionPool
 import com.hortonworks.faas.spark.connector.hana.util.HanaDbConnectionInfo
 import com.hortonworks.faas.spark.connector.util.JDBCImplicits._
@@ -69,8 +70,9 @@ trait TestBase {
   def withConnection[T](handle: Connection => T): T =
     withConnection[T](masterConnectionInfo)(handle)
 
-  def withConnection[T](info: HanaDbConnectionInfo)(handle: Connection => T): T =
-    HanaDbConnectionPool.withConnection(info)(handle)
+  def withConnection[T](info: HanaDbConnectionInfo)(handle: Connection => T): T = {
+    TestMysqlDbConnectionPool.withConnection(info)(handle)
+  }
 
   def recreateDatabase: Unit = {
     withConnection(masterConnectionInfo.copy(dbName=""))(conn => {

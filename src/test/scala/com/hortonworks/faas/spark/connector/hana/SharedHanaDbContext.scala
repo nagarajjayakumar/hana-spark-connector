@@ -9,7 +9,7 @@ trait SharedHanaDbContext extends TestBase with BeforeAndAfterAll {self: Suite =
   override def beforeAll() {
     sparkUp(local = true)
 
-    val timeZone = TimeZone.getTimeZone("GMT")
+    val timeZone = TimeZone.getTimeZone("EST")
     TimeZone.setDefault(timeZone)
 
     super.beforeAll()
