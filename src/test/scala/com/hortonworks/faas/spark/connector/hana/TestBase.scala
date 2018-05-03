@@ -4,7 +4,7 @@ import java.net.InetAddress
 import java.security.MessageDigest
 import java.sql.{Connection, PreparedStatement, Statement}
 
-import com.hortonworks.faas.spark.connector.config.TestMysqlDbConnectionPool
+import TestMysqlDbConnectionPool
 import com.hortonworks.faas.spark.connector.hana.config.HanaDbConnectionPool
 import com.hortonworks.faas.spark.connector.hana.util.HanaDbConnectionInfo
 import com.hortonworks.faas.spark.connector.util.JDBCImplicits._
@@ -22,9 +22,9 @@ trait TestBase {
   }
 
   val masterHost = sys.env.get("HANADB_HOST_TEST").getOrElse("127.0.0.1")
-  val masterConnectionInfo: HanaDbConnectionInfo =
+  val masterConnectionInfo: MysqlDbConnectionInfo =
     HanaDbConnectionInfo(masterHost, 3306, "root", "passw0rd", dbName) // scalastyle:ignore
-  val leafConnectionInfo: HanaDbConnectionInfo =
+  val leafConnectionInfo: MysqlDbConnectionInfo =
     HanaDbConnectionInfo(masterHost, 3306, "root", "passw0rd", dbName) // scalastyle:ignore
 
   var ss: SparkSession = null
@@ -61,7 +61,7 @@ trait TestBase {
   def withStatement[T](handle: Statement => T): T =
     withConnection(conn => conn.withStatement(handle))
 
-  def withStatement[T](info: HanaDbConnectionInfo)(handle: Statement => T): T =
+  def withStatement[T](info: MysqlDbConnectionInfo)(handle: Statement => T): T =
     withConnection(info)(conn => conn.withStatement(handle))
 
   def withPreparedStatement[T](query: String, handle: PreparedStatement => T): T =
@@ -70,7 +70,7 @@ trait TestBase {
   def withConnection[T](handle: Connection => T): T =
     withConnection[T](masterConnectionInfo)(handle)
 
-  def withConnection[T](info: HanaDbConnectionInfo)(handle: Connection => T): T = {
+  def withConnection[T](info: MysqlDbConnectionInfo)(handle: Connection => T): T = {
     TestMysqlDbConnectionPool.withConnection(info)(handle)
   }
 
