@@ -4,9 +4,6 @@ import java.net.InetAddress
 import java.security.MessageDigest
 import java.sql.{Connection, PreparedStatement, Statement}
 
-import TestMysqlDbConnectionPool
-import com.hortonworks.faas.spark.connector.hana.config.HanaDbConnectionPool
-import com.hortonworks.faas.spark.connector.hana.util.HanaDbConnectionInfo
 import com.hortonworks.faas.spark.connector.util.JDBCImplicits._
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.{SparkConf, SparkContext}
@@ -23,9 +20,9 @@ trait TestBase {
 
   val masterHost = sys.env.get("HANADB_HOST_TEST").getOrElse("127.0.0.1")
   val masterConnectionInfo: MysqlDbConnectionInfo =
-    HanaDbConnectionInfo(masterHost, 3306, "root", "passw0rd", dbName) // scalastyle:ignore
+    MysqlDbConnectionInfo(masterHost, 3306, "root", "passw0rd", dbName) // scalastyle:ignore
   val leafConnectionInfo: MysqlDbConnectionInfo =
-    HanaDbConnectionInfo(masterHost, 3306, "root", "passw0rd", dbName) // scalastyle:ignore
+    MysqlDbConnectionInfo(masterHost, 3306, "root", "passw0rd", dbName) // scalastyle:ignore
 
   var ss: SparkSession = null
   var sc: SparkContext = null
