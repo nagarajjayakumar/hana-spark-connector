@@ -11,12 +11,12 @@ object TestUtils {
     test.withConnection(conn => {
       conn.withStatement(stmt => {
         stmt.execute("""
-          CREATE TABLE t
+          CREATE TABLE IF NOT EXISTS t
           (id INT PRIMARY KEY, data VARCHAR(200), key(data))
         """)
         stmt.execute("""
           CREATE TABLE s
-          (id INT, data VARCHAR(200), key(id), key(data), shard())
+          (id INT, data VARCHAR(200), key(id), key(data))
         """)
         stmt.execute("""
           CREATE /*!90618 reference */ TABLE r

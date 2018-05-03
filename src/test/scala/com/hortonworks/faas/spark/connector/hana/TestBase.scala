@@ -4,6 +4,8 @@ import java.net.InetAddress
 import java.security.MessageDigest
 import java.sql.{Connection, PreparedStatement, Statement}
 
+import com.hortonworks.faas.spark.connector.hana.config.HanaDbConnectionPool
+import com.hortonworks.faas.spark.connector.hana.util.HanaDbConnectionInfo
 import com.hortonworks.faas.spark.connector.util.JDBCImplicits._
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.{SparkConf, SparkContext}
@@ -19,10 +21,10 @@ trait TestBase {
   }
 
   val masterHost = sys.env.get("HANADB_HOST_TEST").getOrElse("127.0.0.1")
-  val masterConnectionInfo: MysqlDbConnectionInfo =
-    MysqlDbConnectionInfo(masterHost, 3306, "root", "passw0rd", dbName) // scalastyle:ignore
-  val leafConnectionInfo: MysqlDbConnectionInfo =
-    MysqlDbConnectionInfo(masterHost, 3306, "root", "passw0rd", dbName) // scalastyle:ignore
+  val masterConnectionInfo: HanaDbConnectionInfo =
+    HanaDbConnectionInfo(masterHost, 3306, "root", "passw0rd", dbName) // scalastyle:ignore
+  val leafConnectionInfo: HanaDbConnectionInfo =
+    HanaDbConnectionInfo(masterHost, 3306, "root", "passw0rd", dbName) // scalastyle:ignore
 
   var ss: SparkSession = null
   var sc: SparkContext = null
@@ -32,11 +34,11 @@ trait TestBase {
 
     var conf = new SparkConf()
       .setAppName("HanaDb Connector Test")
-      .set("spark.HanaDb.host", masterConnectionInfo.dbHost)
-      .set("spark.HanaDb.port", masterConnectionInfo.dbPort.toString)
-      .set("spark.HanaDb.user", masterConnectionInfo.user)
-      .set("spark.HanaDb.password", masterConnectionInfo.password)
-      .set("spark.HanaDb.defaultDatabase", masterConnectionInfo.dbName)
+      .set("spark.hanadb.host", masterConnectionInfo.dbHost)
+      .set("spark.hanadb.port", masterConnectionInfo.dbPort.toString)
+      .set("spark.hanadb.user", masterConnectionInfo.user)
+      .set("spark.hanadb.password", masterConnectionInfo.password)
+      .set("spark.hanadb.defaultDatabase", masterConnectionInfo.dbName)
 
     if (local) {
       conf = conf.setMaster("local")
@@ -58,7 +60,7 @@ trait TestBase {
   def withStatement[T](handle: Statement => T): T =
     withConnection(conn => conn.withStatement(handle))
 
-  def withStatement[T](info: MysqlDbConnectionInfo)(handle: Statement => T): T =
+  def withStatement[T](info: HanaDbConnectionInfo)(handle: Statement => T): T =
     withConnection(info)(conn => conn.withStatement(handle))
 
   def withPreparedStatement[T](query: String, handle: PreparedStatement => T): T =
@@ -67,8 +69,8 @@ trait TestBase {
   def withConnection[T](handle: Connection => T): T =
     withConnection[T](masterConnectionInfo)(handle)
 
-  def withConnection[T](info: MysqlDbConnectionInfo)(handle: Connection => T): T = {
-    TestMysqlDbConnectionPool.withConnection(info)(handle)
+  def withConnection[T](info: HanaDbConnectionInfo)(handle: Connection => T): T = {
+    HanaDbConnectionPool.withConnection(info)(handle)
   }
 
   def recreateDatabase: Unit = {

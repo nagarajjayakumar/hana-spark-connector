@@ -27,7 +27,7 @@ case class HanaDbCluster(conf: HanaDbConf)  {
     val metaDataBuilder : MetadataBuilder = new MetadataBuilder
     WithCloseables(getConnection) { conn =>
       WithCloseables(conn.createStatement()) { stmt =>
-        WithCloseables(stmt.executeQuery(s"SELECT * FROM $query LIMIT 0")) { rs =>
+        WithCloseables(stmt.executeQuery(s"SELECT * FROM ($query)  lzalias limit 0")) { rs =>
           val metadata = rs.getMetaData
           val columnCount = metadata.getColumnCount
 
