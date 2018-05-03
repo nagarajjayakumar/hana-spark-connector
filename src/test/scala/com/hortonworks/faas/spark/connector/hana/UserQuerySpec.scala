@@ -29,7 +29,7 @@ class UserQuerySpec extends FlatSpec with SharedHanaDbContext{
       // and can be queried using Spark DataFrame query functions
 
       // count the number of rows
-      println(s"The number of customers from Illinois is ${loadT352T_T.count()}")
+      println(s"The number of MANDT SAP table is ${loadT352T_T.count()}")
 
       // print out the DataFrame
       loadT352T_T.show()
