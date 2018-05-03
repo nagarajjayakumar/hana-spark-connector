@@ -19,14 +19,29 @@ class UserQuerySpec extends FlatSpec with SharedHanaDbContext{
     // Verify that we can read from each table
     for (name <- Seq("T352T_T", "s", "r")) {
 
-      val customersFromIllinois = ss
+
+      val loadT352T_T = ss
+        .read
+        .format("com.hortonworks.faas.spark.connector")
+        .options(Map("path" -> ( dbName + "." + name)))
+        .load()
+      // customersFromIllinois is now a Spark DataFrame which represents the specified MemSQL table
+      // and can be queried using Spark DataFrame query functions
+
+      // count the number of rows
+      println(s"The number of customers from Illinois is ${loadT352T_T.count()}")
+
+      // print out the DataFrame
+      loadT352T_T.show()
+
+      val mandtCount = ss
         .read
         .format("com.hortonworks.faas.spark.connector")
         .options(Map("query" -> ("select MANDT, count(*) from " +   dbName + "." + name+ " GROUP BY MANDT"),
           "database" -> dbName))
         .load()
 
-      customersFromIllinois.show()
+      mandtCount.show()
 
       val table = ss
         .read

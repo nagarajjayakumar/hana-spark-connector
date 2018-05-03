@@ -74,7 +74,7 @@ case class HanaDbRDD[T: ClassTag](@transient sc: SparkContext,
     }
 
     val conn = HanaDbConnectionPool.connect(partition.connectionInfo)
-    val stmt = conn.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
+    val stmt = conn.prepareStatement(query.replace("`", ""), ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
     if (enableStreaming) {
       // setFetchSize(Integer.MIN_VALUE) enables row-by-row streaming for the MySQL JDBC connector
       // https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-implementation-notes.html

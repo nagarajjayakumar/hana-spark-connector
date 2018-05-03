@@ -29,5 +29,5 @@ case class TableIdentifier(table: String, namespace: Option[String] = None) {
 
 object TableIdentifier {
   def apply(namespace: String, tableName: String): TableIdentifier =
-    TableIdentifier(tableName, Some(namespace))
+    TableIdentifier(tableName.replace("`", ""), Some(namespace.replace("`", "")))
 }
