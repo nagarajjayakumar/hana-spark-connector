@@ -8,30 +8,31 @@ import org.apache.spark.sql.catalyst.expressions.Expression
 import org.apache.spark.sql.{Column, DataFrame, Row}
 object TestUtils {
   def setupBasic(test: TestBase): Unit = {
-    test.withConnection(conn => {
-      conn.withStatement(stmt => {
-        stmt.execute("""
-          CREATE TABLE IF NOT EXISTS t
-          (id INT PRIMARY KEY, data VARCHAR(200), key(data))
-        """)
-        stmt.execute("""
-          CREATE TABLE s
-          (id INT, data VARCHAR(200), key(id), key(data))
-        """)
-        stmt.execute("""
-          CREATE /*!90618 reference */ TABLE r
-          (id INT PRIMARY KEY, data VARCHAR(200), key(data))
-        """)
-
-        val insertValues = Range(0, 1000)
-          .map(i => s"""($i, 'test_data_${"%04d".format(i)}')""")
-          .mkString(",")
-
-        stmt.execute("INSERT INTO t VALUES" + insertValues)
-        stmt.execute("INSERT INTO s VALUES" + insertValues)
-        stmt.execute("INSERT INTO r VALUES" + insertValues)
-      })
-    })
+    print("Naga was here")
+//    test.withConnection(conn => {
+//      conn.withStatement(stmt => {
+//        stmt.execute("""
+//          CREATE TABLE IF NOT EXISTS t
+//          (id INT PRIMARY KEY, data VARCHAR(200), key(data))
+//        """)
+//        stmt.execute("""
+//          CREATE TABLE s
+//          (id INT, data VARCHAR(200), key(id), key(data))
+//        """)
+//        stmt.execute("""
+//          CREATE /*!90618 reference */ TABLE r
+//          (id INT PRIMARY KEY, data VARCHAR(200), key(data))
+//        """)
+//
+//        val insertValues = Range(0, 1000)
+//          .map(i => s"""($i, 'test_data_${"%04d".format(i)}')""")
+//          .mkString(",")
+//
+//        stmt.execute("INSERT INTO t VALUES" + insertValues)
+//        stmt.execute("INSERT INTO s VALUES" + insertValues)
+//        stmt.execute("INSERT INTO r VALUES" + insertValues)
+//      })
+//    })
   }
 
   def setupAllHanaDbTypes(test: TestBase, types: Seq[TestData.HanaDbType]): String = {

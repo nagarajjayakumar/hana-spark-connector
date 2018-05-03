@@ -17,12 +17,16 @@ class UserQuerySpec extends FlatSpec with SharedHanaDbContext{
 
   "UserQuerySpec" should "create dataframe from user-specified query" in {
     // Verify that we can read from each table
-    for (name <- Seq("t", "s", "r")) {
+    for (name <- Seq("T352T_T", "s", "r")) {
       val table = ss
         .read
         .format("com.hortonworks.faas.spark.connector")
         .options(Map("query" -> ("SELECT * FROM " + dbName + "." + name)))
         .load()
+
+      table.show()
+
+      table.printSchema()
 
       assert(table.count == 1000)
       assert(table.schema.exists(f => f.name == "data"))

@@ -15,22 +15,23 @@ trait TestBase {
     // Generate a unique database name based on this machine
     // This is so that multiple people can run tests against
     // the same HanaDb cluster.
-    val hostMD5 = MessageDigest.getInstance("md5").digest(
-      InetAddress.getLocalHost.getAddress)
-    "connector_tests_" + hostMD5.slice(0, 2).map("%02x".format(_)).mkString
+//    val hostMD5 = MessageDigest.getInstance("md5").digest(
+//      InetAddress.getLocalHost.getAddress)
+//    "connector_tests_" + hostMD5.slice(0, 2).map("%02x".format(_)).mkString
+    "SLTECC"
   }
 
   val masterHost = sys.env.get("HANADB_HOST_TEST").getOrElse("127.0.0.1")
   val masterConnectionInfo: HanaDbConnectionInfo =
-    HanaDbConnectionInfo(masterHost, 3306, "root", "passw0rd", dbName) // scalastyle:ignore
+    HanaDbConnectionInfo(masterHost, 30015, "SYS_VDM", "Cnct2VDM4", dbName) // scalastyle:ignore
   val leafConnectionInfo: HanaDbConnectionInfo =
-    HanaDbConnectionInfo(masterHost, 3306, "root", "passw0rd", dbName) // scalastyle:ignore
+    HanaDbConnectionInfo(masterHost, 30015, "SYS_VDM", "Cnct2VDM4", dbName) // scalastyle:ignore
 
   var ss: SparkSession = null
   var sc: SparkContext = null
 
   def sparkUp(local: Boolean=false): Unit = {
-    recreateDatabase
+    //recreateDatabase
 
     var conf = new SparkConf()
       .setAppName("HanaDb Connector Test")
