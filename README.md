@@ -28,8 +28,10 @@ Direct Table Access Mode :
         .format("com.hortonworks.faas.spark.connector")
         .options(Map("path" -> ( dbName + "." + name)))
         .load()
-        println(s"The number of MANDT SAP table is ${loadT352T_T.count()}")
-        loadT352T_T.show()
+        
+ println(s"The record count for MANDT SAP table is ${loadT352T_T.count()}")
+ 
+ loadT352T_T.show()
       
 ```
 
