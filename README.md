@@ -10,18 +10,18 @@ Pass test skip flag in case if you need to skip Test case execution during insta
  
 usage
 
-<code>
+Query Mode : 
+
+```
  val mandtCount = ss
         .read
         .format("com.hortonworks.faas.spark.connector")
         .options(Map("query" -> ("select MANDT, count(*) from " +   dbName + "." + name+ " GROUP BY MANDT"),
-          "database" -> dbName))
-        .load()
-</code>  
-<br />
-<br />
+        "database" -> dbName))
+```  
 
-<code>
+Direct Table Access Mode :
+```
 
  val loadT352T_T = ss
         .read
@@ -31,10 +31,7 @@ usage
         println(s"The number of MANDT SAP table is ${loadT352T_T.count()}")
         loadT352T_T.show()
       
-</code>
-
-<br />
-<br />
+```
 
 SIGN: NAGA JAY
 
