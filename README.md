@@ -16,8 +16,8 @@ Query Mode :
  val mandtCount = ss
         .read
         .format("com.hortonworks.faas.spark.connector")
-        .options(Map("query" -> ("select MANDT, count(*) from " +   dbName + "." + name+ " GROUP BY MANDT"),
-        "database" -> dbName))
+        .options(Map("query" -> ("select MANDT, count(*) from " +   hanaNameSpace + "." + tableName+ " GROUP BY MANDT"),
+        "database" -> hanaNameSpace))
 ```  
 
 Direct Table Access Mode :
@@ -26,7 +26,7 @@ Direct Table Access Mode :
  val loadT352T_T = ss
         .read
         .format("com.hortonworks.faas.spark.connector")
-        .options(Map("path" -> ( dbName + "." + name)))
+        .options(Map("path" -> ( hanaNameSpace + "." + tableName)))
         .load()
         
  println(s"The record count for MANDT SAP table is ${loadT352T_T.count()}")
