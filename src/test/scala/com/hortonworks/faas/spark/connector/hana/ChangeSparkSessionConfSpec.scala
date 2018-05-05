@@ -8,8 +8,8 @@ import org.apache.spark.sql.SparkSession
 import org.scalatest.{FlatSpec, Matchers}
 
 /**
-  * Test that changing the SparkSession RuntimeConfig settings for spark.HanaDb.host etc
-  * affects the next attempt to connect to HanaDb.
+  * Test that changing the SparkSession RuntimeConfig settings for spark.hanadb.host etc
+  * affects the next attempt to connect to hanadb.
   */
 class ChangeSparkSessionConfSpec extends FlatSpec with SharedHanaDbContext with Matchers {
   override def beforeAll(): Unit = {
@@ -24,7 +24,7 @@ class ChangeSparkSessionConfSpec extends FlatSpec with SharedHanaDbContext with 
     })
   }
 
-  "Changing the HanaDb settings in the SparkSession RuntimeConfig" should "be reflected in the next attempt to connect to HanaDb" in {
+  "Changing the hanadb settings in the SparkSession RuntimeConfig" should "be reflected in the next attempt to connect to hanadb" in {
     val df = ss
       .read
       .format("com.hortonworks.faas.spark.connector")
@@ -36,15 +36,15 @@ class ChangeSparkSessionConfSpec extends FlatSpec with SharedHanaDbContext with 
     // Change the configuration settings
 
     val newconf = new SparkConf()
-      .setAppName("HanaDb Spark Connector Example")
-      .set("spark.HanaDb.host", "fakehost")
-      .set("spark.HanaDb.user", "fakeuser")
-      .set("spark.HanaDb.password", "fakepassword")
-      .set("spark.HanaDb.defaultDatabase", "fakedatabase")
+      .setAppName("hanadb Spark Connector Example")
+      .set("spark.hanadb.host", "fakehost")
+      .set("spark.hanadb.user", "fakeuser")
+      .set("spark.hanadb.password", "fakepassword")
+      .set("spark.hanadb.defaultDatabase", "fakedatabase")
 
     ss = SparkSession.builder().config(newconf).getOrCreate()
 
-    assert(ss.conf.get("spark.HanaDb.host") == "fakehost")
+    assert(ss.conf.get("spark.hanadb.host") == "fakehost")
 
     try {
       ss.getHanaDbCluster.withHanaConn[Boolean](conn => {
