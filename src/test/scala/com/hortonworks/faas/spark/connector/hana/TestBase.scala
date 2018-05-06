@@ -1,7 +1,5 @@
 package com.hortonworks.faas.spark.connector.hana
 
-import java.net.InetAddress
-import java.security.MessageDigest
 import java.sql.{Connection, PreparedStatement, Statement}
 
 import com.hortonworks.faas.spark.connector.hana.config.HanaDbConnectionPool
