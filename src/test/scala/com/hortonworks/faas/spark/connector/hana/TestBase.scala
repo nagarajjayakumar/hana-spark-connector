@@ -16,7 +16,7 @@ trait TestBase {
 //    val hostMD5 = MessageDigest.getInstance("md5").digest(
 //      InetAddress.getLocalHost.getAddress)
 //    "connector_tests_" + hostMD5.slice(0, 2).map("%02x".format(_)).mkString
-    "SLTECC"
+    "_SYS_REPO"
   }
 
   val masterHost = sys.env.get("HANADB_HOST_TEST").getOrElse("127.0.0.1")

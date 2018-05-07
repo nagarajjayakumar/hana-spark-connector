@@ -9,7 +9,7 @@ object TypeConversions {
   val HANA_SQL_DECIMAL_MAX_PRECISION = 65
   val HANA_SQL_DECIMAL_MAX_SCALE = 30
 
-  def decimalTypeToMySQLType(decimal: DecimalType): String = {
+  def decimalTypeToHanaDbType(decimal: DecimalType): String = {
     val precision = Math.min(HANA_SQL_DECIMAL_MAX_PRECISION, decimal.precision)
     val scale = Math.min(HANA_SQL_DECIMAL_MAX_SCALE, decimal.scale)
     s"DECIMAL($precision, $scale)"
@@ -31,7 +31,7 @@ object TypeConversions {
       case BooleanType => "BOOLEAN"
       case StringType => "TEXT"
       case BinaryType => "BLOB"
-      case dt: DecimalType => decimalTypeToMySQLType(dt)
+      case dt: DecimalType => decimalTypeToHanaDbType(dt)
       case _ => dataType.typeName
     }
   }
@@ -40,8 +40,8 @@ object TypeConversions {
     rsmd.getColumnType(ix) match {
       // scalastyle:off
 
-      case JDBCTypes.TINYINT => ShortType
-      case JDBCTypes.SMALLINT => ShortType
+      case JDBCTypes.TINYINT => IntegerType
+      case JDBCTypes.SMALLINT => IntegerType
       case JDBCTypes.INTEGER => if (rsmd.isSigned(ix)) { IntegerType } else { LongType }
       case JDBCTypes.BIGINT => if (rsmd.isSigned(ix)) { LongType } else { DecimalType(20,0) }
 
@@ -63,6 +63,9 @@ object TypeConversions {
       case JDBCTypes.NVARCHAR => StringType
       case JDBCTypes.LONGVARCHAR => StringType
       case JDBCTypes.LONGNVARCHAR => StringType
+      case JDBCTypes.NCLOB => StringType
+      case JDBCTypes.CLOB => StringType
+
 
       case JDBCTypes.BIT => BinaryType
       case JDBCTypes.BINARY => BinaryType
