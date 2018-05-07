@@ -38,6 +38,7 @@ trait TestBase {
       .set("spark.hanadb.user", masterConnectionInfo.user)
       .set("spark.hanadb.password", masterConnectionInfo.password)
       .set("spark.hanadb.defaultDatabase", masterConnectionInfo.dbName)
+      .set("spark.driver.host", "localhost")
 
     if (local) {
       conf = conf.setMaster("local")
