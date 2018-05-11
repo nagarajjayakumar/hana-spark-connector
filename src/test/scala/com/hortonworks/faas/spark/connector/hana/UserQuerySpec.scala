@@ -46,7 +46,7 @@ class UserQuerySpec extends FlatSpec with SharedHanaDbContext{
       val table = ss
         .read
         .format("com.hortonworks.faas.spark.connector")
-        .options(Map("query" -> ("SELECT * FROM " + dbName + "." + name)))
+        .options(Map("query" -> ("SELECT * FROM " + "SLTECC" + "." + "T352T_T")))
         .load()
 
       table.show()
