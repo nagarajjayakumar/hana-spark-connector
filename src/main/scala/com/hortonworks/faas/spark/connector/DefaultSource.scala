@@ -17,7 +17,7 @@ import org.apache.spark.sql.sources.{BaseRelation, DataSourceRegister, RelationP
 class DefaultSource extends RelationProvider
    with DataSourceRegister{
 
-  override def shortName(): String = "HanaDb"
+  override def shortName(): String = "hanadb"
 
   override def createRelation(sqlContext: SQLContext,
                               parameters: Map[String, String]): BaseRelation = {
