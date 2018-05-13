@@ -15,8 +15,8 @@ object HanaDbConnectionPool {
     DriverManager.setLoginTimeout(DEFAULT_JDBC_LOGIN_TIMEOUT)
 
     val newPool = new BasicDataSource
-    newPool.setDriverClassName("com.sap.db.jdbc.Driver")
-    //newPool.setDriverClassName("com.mysql.jdbc.Driver")
+    //newPool.setDriverClassName("com.sap.db.jdbc.Driver")
+    newPool.setDriverClassName("com.mysql.jdbc.Driver")
     newPool.setUrl(info.toJDBCAddress)
     newPool.setUsername(info.user)
     newPool.setPassword(info.password)

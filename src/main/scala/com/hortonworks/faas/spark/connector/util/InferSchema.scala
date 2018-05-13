@@ -7,8 +7,9 @@ import scala.util.control.Exception._
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.types._
+import util.control.Breaks._
 
-private[connector] object InferSchema {
+private[connector] object InferSchema extends LoggingTrait {
 
   /**
     * Similar to the JSON schema inference.
@@ -20,16 +21,29 @@ private[connector] object InferSchema {
   def apply(
              tokenRdd: RDD[Row],
              header: Array[String],
+             fields: Array[StructField],
              nullValue: String = "",
              dateFormatter: SimpleDateFormat = null): StructType = {
-    val startType: Array[DataType] = Array.fill[DataType](header.length)(NullType)
+    val startType: Array[DataType] =  Array.fill[DataType](header.length)(NullType)
+
     val rootTypes: Array[DataType] = tokenRdd.aggregate(startType)(
       inferRowType(nullValue, header, dateFormatter),
       mergeRowTypes)
 
     val structFields = header.zip(rootTypes).map { case (thisHeader, rootType) =>
       val dType = rootType match {
-        case z: NullType => StringType
+        case z: NullType => {
+          var actualDataType :DataType = StringType
+          breakable {
+            for (i <- 0 until fields.length) {
+              if (fields(i).name == thisHeader) {
+                actualDataType = fields(i).dataType
+                break
+              }
+            }
+          }
+          actualDataType
+        }
         case other => other
       }
       StructField(thisHeader, dType, nullable = true)
@@ -50,7 +64,7 @@ private[connector] object InferSchema {
       rowSoFar
     } else {
       while (i < math.min(rowSoFar.length, next.length)) {  // May have columns on right missing.
-        rowSoFar(i) = inferField(rowSoFar(i), next(i).toString, nullValue, dateFormatter)
+        rowSoFar(i) = inferField(rowSoFar(i), next(i), nullValue, dateFormatter)
         i+=1
       }
       rowSoFar
@@ -70,7 +84,7 @@ private[connector] object InferSchema {
     * point checking if it is an Int, as the final type must be Double or higher.
     */
   private[connector] def inferField(typeSoFar: DataType,
-                                    field: String,
+                                    field: Any,
                                     nullValue: String = "",
                                     dateFormatter: SimpleDateFormat = null): DataType = {
     def tryParseInteger(field: String): DataType = if ((allCatch opt field.toInt).isDefined) {
@@ -126,16 +140,17 @@ private[connector] object InferSchema {
       StringType
     }
 
-    if (field == null || field.isEmpty || field == nullValue) {
+    if (field == null || field.toString.isEmpty || field == nullValue) {
       typeSoFar
     } else {
+      val strField =field.toString
       typeSoFar match {
-        case NullType => tryParseInteger(field)
-        case IntegerType => tryParseInteger(field)
-        case LongType => tryParseLong(field)
-        case DoubleType => tryParseDouble(field)
-        case TimestampType => tryParseTimestamp(field)
-        case BooleanType => tryParseBoolean(field)
+        case NullType => tryParseInteger(strField)
+        case IntegerType => tryParseInteger(strField)
+        case LongType => tryParseLong(strField)
+        case DoubleType => tryParseDouble(strField)
+        case TimestampType => tryParseTimestamp(strField)
+        case BooleanType => tryParseBoolean(strField)
         case StringType => StringType
         case other: DataType =>
           throw new UnsupportedOperationException(s"Unexpected data type $other")

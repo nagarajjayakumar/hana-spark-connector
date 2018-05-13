@@ -16,14 +16,22 @@ trait TestBase {
 //    val hostMD5 = MessageDigest.getInstance("md5").digest(
 //      InetAddress.getLocalHost.getAddress)
 //    "connector_tests_" + hostMD5.slice(0, 2).map("%02x".format(_)).mkString
-    "_SYS_REPO"
+    //"_SYS_REPO"
+    "faas"
   }
 
-  val masterHost = sys.env.get("HANADB_HOST_TEST").getOrElse("127.0.0.1")
+  //val masterHost = sys.env.get("HANADB_HOST_TEST").getOrElse("127.0.0.1")
+  val masterHost = sys.env.get("MYSQLDB_HOST_TEST").getOrElse("127.0.0.1")
+ // val masterConnectionInfo: HanaDbConnectionInfo =
+ //   HanaDbConnectionInfo(masterHost, 30015, "SYS_VDM", "Cnct2VDM4", dbName) // scalastyle:ignore
+ // val leafConnectionInfo: HanaDbConnectionInfo =
+ //   HanaDbConnectionInfo(masterHost, 30015, "SYS_VDM", "Cnct2VDM4", dbName) // scalastyle:ignore
+
   val masterConnectionInfo: HanaDbConnectionInfo =
-    HanaDbConnectionInfo(masterHost, 30015, "SYS_VDM", "Cnct2VDM4", dbName) // scalastyle:ignore
+    HanaDbConnectionInfo(masterHost, 3306, "root", "passw0rd", dbName) // scalastyle:ignore
   val leafConnectionInfo: HanaDbConnectionInfo =
-    HanaDbConnectionInfo(masterHost, 30015, "SYS_VDM", "Cnct2VDM4", dbName) // scalastyle:ignore
+    HanaDbConnectionInfo(masterHost, 3306, "root", "passw0rd", dbName) // scalastyle:ignore
+
 
   var ss: SparkSession = null
   var sc: SparkContext = null

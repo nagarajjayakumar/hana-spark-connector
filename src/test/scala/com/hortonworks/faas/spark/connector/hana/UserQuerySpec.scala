@@ -3,6 +3,7 @@
 package com.hortonworks.faas.spark.connector.hana
 
 import com.hortonworks.faas.spark.connector.util.InferSchema
+import org.apache.spark.sql.types.StructType
 import org.scalatest.FlatSpec
 
 /**
@@ -47,10 +48,15 @@ class UserQuerySpec extends FlatSpec with SharedHanaDbContext{
       val table = ss
         .read
         .format("com.hortonworks.faas.spark.connector")
-        .options(Map("query" -> ("SELECT * FROM " + "SLTECC" + "." + "T352T_T")))
+        .options(Map("query" -> ("SELECT * FROM " + dbName + "." + "s" )))
         .load()
 
-      InferSchema(table.rdd,table.schema.fieldNames)
+      table.show()
+      table.printSchema()
+
+      val schema: StructType = InferSchema(table.rdd,table.schema.fieldNames, table.schema.fields)
+
+      println(schema)
 
       table.show()
       table.printSchema()

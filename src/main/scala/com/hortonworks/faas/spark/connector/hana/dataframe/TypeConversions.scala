@@ -86,7 +86,7 @@ object TypeConversions {
       case java.sql.Types.BOOLEAN => resultSet.getBoolean(index)
 
       case java.sql.Types.BINARY | java.sql.Types.VARBINARY |
-           java.sql.Types.LONGVARBINARY | java.sql.Types.BLOB => resultSet.getBytes(index)
+           java.sql.Types.LONGVARBINARY | java.sql.Types.BLOB  | java.sql.Types.BIT  => resultSet.getBytes(index)
 
       case java.sql.Types.TINYINT | java.sql.Types.INTEGER |
            java.sql.Types.SMALLINT => resultSet.getInt(index)

@@ -9,6 +9,7 @@ import org.apache.spark.sql.{Column, DataFrame, Row}
 object TestUtils {
   def setupBasic(test: TestBase): Unit = {
     print("Naga was here")
+
 //    test.withConnection(conn => {
 //      conn.withStatement(stmt => {
 //        stmt.execute("""
