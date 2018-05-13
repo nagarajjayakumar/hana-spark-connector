@@ -189,4 +189,6 @@ private[connector] object InferSchema extends LoggingTrait {
 
     case _ => None
   }
+
+  def printSchema( schema: StructType): Unit = println(schema.treeString)
 }

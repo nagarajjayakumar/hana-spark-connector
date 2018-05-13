@@ -56,7 +56,7 @@ class UserQuerySpec extends FlatSpec with SharedHanaDbContext{
 
       val schema: StructType = InferSchema(table.rdd,table.schema.fieldNames, table.schema.fields)
 
-      println(schema)
+      InferSchema.printSchema(schema)
 
       table.show()
       table.printSchema()
