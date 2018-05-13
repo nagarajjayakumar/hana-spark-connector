@@ -35,5 +35,20 @@ Direct Table Access Mode :
       
 ```
 
+Test Scenario
+
+HanaDbConnectionInfo -  JDBC URL
+
+``` 
+    var address = s"jdbc:sap://$dbHost:$dbPort"
+
+```
+
+HanaDbConnectionPool  - JDBC Driver
+
+```
+    newPool.setDriverClassName("com.sap.db.jdbc.Driver")
+```
+
 SIGN: NAGA JAY
 
