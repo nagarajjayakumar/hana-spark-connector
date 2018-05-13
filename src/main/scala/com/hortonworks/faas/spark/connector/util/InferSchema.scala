@@ -170,7 +170,7 @@ private[connector] object InferSchema extends LoggingTrait {
       FloatType,
       DoubleType,
       TimestampType,
-      DecimalType.USER_DEFAULT)
+      DecimalType.SYSTEM_DEFAULT)
 
   /**
     * Copied from internal Spark api
