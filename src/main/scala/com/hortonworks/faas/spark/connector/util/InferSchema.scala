@@ -4,8 +4,8 @@ import java.sql.Timestamp
 import java.text.SimpleDateFormat
 
 import scala.util.control.Exception._
-
 import org.apache.spark.rdd.RDD
+import org.apache.spark.sql.Row
 import org.apache.spark.sql.types._
 
 private[connector] object InferSchema {
@@ -18,14 +18,13 @@ private[connector] object InferSchema {
     *     3. Replace any null types with string type
     */
   def apply(
-             tokenRdd: RDD[Array[String]],
+             tokenRdd: RDD[Row],
              header: Array[String],
-             dropMalformed: Boolean = false,
              nullValue: String = "",
              dateFormatter: SimpleDateFormat = null): StructType = {
     val startType: Array[DataType] = Array.fill[DataType](header.length)(NullType)
     val rootTypes: Array[DataType] = tokenRdd.aggregate(startType)(
-      inferRowType(nullValue, header, dateFormatter, dropMalformed),
+      inferRowType(nullValue, header, dateFormatter),
       mergeRowTypes)
 
     val structFields = header.zip(rootTypes).map { case (thisHeader, rootType) =>
@@ -42,16 +41,16 @@ private[connector] object InferSchema {
   private def inferRowType(
                             nullValue: String,
                             header: Array[String],
-                            dateFormatter: SimpleDateFormat,
-                            dropMalformed: Boolean = false)
-                          (rowSoFar: Array[DataType], next: Array[String]): Array[DataType] = {
+                            dateFormatter: SimpleDateFormat
+                            )
+                          (rowSoFar: Array[DataType], next: Row): Array[DataType] = {
     var i = 0
-    if (header.length != next.length && dropMalformed) {
+    if (header.length != next.length ) {
       // Type inference should not be based on malformed lines in case of DROPMALFORMED parse mode
       rowSoFar
     } else {
       while (i < math.min(rowSoFar.length, next.length)) {  // May have columns on right missing.
-        rowSoFar(i) = inferField(rowSoFar(i), next(i), nullValue, dateFormatter)
+        rowSoFar(i) = inferField(rowSoFar(i), next(i).toString, nullValue, dateFormatter)
         i+=1
       }
       rowSoFar

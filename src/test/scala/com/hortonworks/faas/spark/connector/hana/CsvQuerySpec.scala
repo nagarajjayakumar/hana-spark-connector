@@ -25,10 +25,10 @@ class CsvQuerySpec extends FlatSpec with SharedHanaDbContext{
     val df = sqlContext.read
       .format("com.databricks.spark.csv")
       .option("header", "true") // Use first line of all files as header
-      .option("inferSchema", "false") // Automatically infer data types
+      .option("inferSchema", "true") // Automatically infer data types
       .load(carsFile)
 
-    //df.show()
+    df.show()
     df.printSchema()
   }
 }

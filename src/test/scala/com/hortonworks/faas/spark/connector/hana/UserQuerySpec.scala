@@ -2,6 +2,7 @@
 
 package com.hortonworks.faas.spark.connector.hana
 
+import com.hortonworks.faas.spark.connector.util.InferSchema
 import org.scalatest.FlatSpec
 
 /**
@@ -48,6 +49,8 @@ class UserQuerySpec extends FlatSpec with SharedHanaDbContext{
         .format("com.hortonworks.faas.spark.connector")
         .options(Map("query" -> ("SELECT * FROM " + "SLTECC" + "." + "T352T_T")))
         .load()
+
+      InferSchema(table.rdd,table.schema.fieldNames)
 
       table.show()
       table.printSchema()
