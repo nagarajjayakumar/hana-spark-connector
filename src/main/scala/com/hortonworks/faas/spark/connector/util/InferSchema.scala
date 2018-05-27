@@ -9,7 +9,7 @@ import org.apache.spark.sql.Row
 import org.apache.spark.sql.types._
 import util.control.Breaks._
 
-private[connector] object InferSchema extends LoggingTrait {
+private[spark] object InferSchema extends LoggingTrait {
 
   /**
     * Similar to the JSON schema inference.
