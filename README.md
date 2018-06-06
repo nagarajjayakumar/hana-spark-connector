@@ -49,6 +49,8 @@ HanaDbConnectionPool  - JDBC Driver
 ```
     newPool.setDriverClassName("com.sap.db.jdbc.Driver")
 ```
+To Run the Docker Application
+./run.sh
 
 To Run the Application in Docker 
 ./run.sh 
