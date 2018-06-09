@@ -54,12 +54,6 @@ node {
     stage('Run App'){
         runApp(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER, HTTP_PORT)
     }
-    
-    stage ('Invoke_predictor_pipeline') {
-            steps {
-                build job: 'hana-predictor-pipeline'
-            }
-        }
 
 }
 
