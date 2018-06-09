@@ -46,9 +46,7 @@ node {
     }
 
     stage ('Invoke_predictor_pipeline') {
-            steps {
                 build job: 'hana-predictor-pipeline'
-            }
         }
 
     stage('Run App'){
