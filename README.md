@@ -52,6 +52,10 @@ HanaDbConnectionPool  - JDBC Driver
 To Run the Docker Application
 ./run.sh
 
+To Run the Application in Docker 
+./run.sh 
+
+
 SIGN: NAGA JAY
 
 CICD Contributions: YOGESH {@yogeshprabhu}
