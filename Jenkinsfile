@@ -45,13 +45,6 @@ node {
         notifySuccessful()
     }
 
-    stage ('Invoke_predictor_pipeline') {
-                build job: 'hana-predictor-pipeline'
-        }
-
-    stage ('Invoke_NFaaS_pipeline') {
-                build job: 'NFaaS-pipeline'
-        }
 
     stage('Run App'){
         runApp(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER, HTTP_PORT)
