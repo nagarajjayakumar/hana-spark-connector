@@ -16,7 +16,7 @@ COPY hana-spark-connector.iml pipeline/
 
 WORKDIR pipeline/
 
-RUN  mvn install:install-file -Dfile=/pipeline/ngdbc.jar -DgroupId=com.sap.db -DartifactId=ngdbc -Dversion=2.1.2 -Dpackaging=jar
+RUN  mvn install:install-file -Dfile=pipeline/ngdbc.jar -DgroupId=com.sap.db -DartifactId=ngdbc -Dversion=2.1.2 -Dpackaging=jar
 
 RUN ["mvn", "install", "-Dmaven.test.skip=true"]
 
