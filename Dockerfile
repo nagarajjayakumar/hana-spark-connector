@@ -1,4 +1,4 @@
-FROM maven:3.5-alpine
+FROM yogeshprabhu/spark2.3
 
 COPY ngdbc.jar pipeline/
 
